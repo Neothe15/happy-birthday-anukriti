@@ -1,420 +1,454 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Happy Birthday, My Anukriti 💖</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Happy Birthday, My Anukriti 💖</title>
 
-  <!-- confetti lib -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<!-- confetti -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
-  <style>
-    /* ---------- THEME ---------- */
-    :root{
-      --bg-1: #fffafc;
-      --bg-2: #fff6f8;
-      --card: #ffffff;
-      --accent: #ff6b9f;   /* pink */
-      --muted: #6b7280;
-      --soft: rgba(255,107,159,0.08);
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-      color:#222;
-      background: linear-gradient(180deg,var(--bg-1),var(--bg-2));
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      height:100vh;
-      overflow:auto;
-      scroll-behavior:smooth;
-      scroll-snap-type: y mandatory;
-    }
+<style>
+  :root{
+    --bg-a:#fff8fb; --bg-b:#fff2f6;
+    --card: rgba(255,255,255,0.95);
+    --accent:#ff5e90;
+    --muted:#6b7280;
+    --glass: rgba(255,255,255,0.6);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Poppins", sans-serif;
+    color:#222;
+    background: linear-gradient(160deg,var(--bg-a),var(--bg-b));
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.45;
+    scroll-behavior:smooth;
+  }
 
-    /* ---------- LAYOUT (full-screen sections) ---------- */
-    section{
-      min-height:100vh;
-      padding:40px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-direction:column;
-      gap:18px;
-      scroll-snap-align:start;
-    }
+  /* Layout container */
+  .wrap{
+    width:100%;
+    max-width:1100px;
+    margin: 28px auto;
+    padding: 20px;
+  }
 
-    .container{
-      width:100%;
-      max-width:980px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.92));
-      border-radius:18px;
-      box-shadow: 0 10px 40px rgba(20,30,60,0.08);
-      padding:28px;
-      text-align:center;
-    }
+  /* Header / hero */
+  header.hero{
+    background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,250,252,0.96));
+    border-radius:16px;
+    padding:28px;
+    box-shadow: 0 12px 40px rgba(30,20,40,0.06);
+    display:flex;
+    gap:18px;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .hero-left{max-width:68%}
+  h1{ margin:0; font-size:1.8rem; color: #e0336a; letter-spacing:0.2px; }
+  .lead{ color:var(--muted); margin-top:6px; font-size:0.98rem; }
 
-    h1{
-      margin:0;
-      font-size:2rem;
-      color: #ff4977;
-      letter-spacing:0.2px;
-    }
-    .lead{
-      color:var(--muted);
-      margin-top:6px;
-      font-size:1rem;
-    }
+  /* Right small controls */
+  .controls{ display:flex; gap:10px; align-items:center; }
+  .music-btn{
+    background:linear-gradient(90deg,var(--accent),#ff96b1);
+    color:#071022; padding:8px 12px; border-radius:10px; border:none; cursor:pointer; font-weight:700;
+    box-shadow: 0 8px 24px rgba(255,105,160,0.12);
+  }
+  .small-muted{ font-size:0.85rem; color:var(--muted); }
 
-    /* ---------- photos ---------- */
-    .photos{
-      display:flex;
-      gap:16px;
-      justify-content:center;
-      margin-top:18px;
-      flex-wrap:wrap;
-    }
-    .photo{
-      width:260px;
-      height:180px;
-      border-radius:14px;
-      overflow:hidden;
-      background:linear-gradient(180deg, #fff, #f9f6fb);
-      box-shadow: 0 8px 30px rgba(20,30,60,0.06);
-      position:relative;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .photo img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-    .photo .caption{
-      position:absolute;
-      left:10px; bottom:8px;
-      background: rgba(255,255,255,0.75);
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:0.9rem;
-      color:#333;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    }
+  /* Photos grid */
+  .photos {
+    margin-top:20px;
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap:18px;
+  }
+  .photo-card {
+    background:var(--card);
+    border-radius:12px;
+    padding:12px;
+    box-shadow: 0 10px 30px rgba(20,30,60,0.05);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .photo-frame {
+    width:100%;
+    height:220px;
+    background: linear-gradient(#fff,#fbf6fb);
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  /* show full image using contain (no cropping) */
+  .photo-frame img{
+    width:100%;
+    height:100%;
+    object-fit: contain;
+    display:block;
+    background: #faf6f9;
+  }
+  .caption { font-size:0.9rem; color:#444; margin-top:8px; text-align:center; }
 
-    /* ---------- questions ---------- */
-    .question-card{
-      max-width:760px;
-      background:linear-gradient(180deg,#fff,#fff);
-      border-radius:16px;
-      padding:22px;
-      box-shadow: 0 8px 28px rgba(20,30,60,0.06);
-      margin-top:12px;
-    }
-    .qtext{
-      font-size:1.15rem;
-      color:#333;
-      margin-bottom:12px;
-    }
-    .btnrow{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-    .btn{
-      background:transparent;
-      border:2px solid rgba(30,40,60,0.08);
-      padding:10px 18px;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:600;
-      transition: transform .18s ease, box-shadow .18s;
-      min-width:140px;
-    }
-    .btn.yes{
-      background: linear-gradient(90deg,var(--accent), #ff8fb5);
-      color:#081226;
-      border: none;
-      box-shadow: 0 8px 30px rgba(255,107,159,0.12);
-    }
-    .btn.no{
-      background:transparent;
-      color:#333;
-    }
-    .btn:hover{ transform: translateY(-4px) }
+  /* Questions / cards */
+  .card {
+    background:var(--card);
+    border-radius:12px;
+    padding:18px;
+    box-shadow: 0 10px 30px rgba(20,30,60,0.05);
+  }
+  .questions { margin-top:22px; display:flex; flex-direction:column; gap:14px; }
+  .qcard { padding:14px; border-radius:10px; background:linear-gradient(#fff,#fff); }
+  .qtext{ font-size:1.05rem; color:#222; margin-bottom:10px; }
+  .btnrow { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:6px; }
+  .btn {
+    padding:10px 16px; border-radius:10px; min-width:140px; cursor:pointer; border:2px solid rgba(0,0,0,0.06);
+    background:transparent; font-weight:700;
+  }
+  .btn.yes{ background: linear-gradient(90deg,var(--accent), #ff97b7); color:#071022; border:none; box-shadow:0 8px 24px rgba(255,105,160,0.12) }
+  .btn.no{ background:#fff; color:#333 }
 
-    /* ---------- balloons ---------- */
-    .balloon{
-      position:fixed;
-      bottom:-120px;
-      width:56px;
-      height:72px;
-      border-radius:50% 50% 45% 45%;
-      transform-origin:center;
-      display:flex;
-      align-items:flex-end;
-      justify-content:center;
-      z-index:1200;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    }
-    .string{
-      width:2px;
-      height:60px;
-      background: rgba(0,0,0,0.09);
-      margin-top:4px;
-      border-radius:2px;
-      transform: translateY(20px);
-    }
-    @keyframes floatBalloon {
-      0% { transform: translateY(0) rotate(-6deg) scale(1); opacity:1 }
-      100% { transform: translateY(-900px) rotate(8deg) scale(1.05); opacity:0 }
-    }
+  /* Quote area */
+  .quote { margin-top:10px; min-height:44px; font-style:italic; color:#5b2b3a; font-weight:600; opacity:0; transition:opacity .45s, transform .45s; transform: translateY(6px); }
+  .quote.show{ opacity:1; transform: translateY(0); }
 
-    /* ---------- love letter (fade-in) ---------- */
-    .love-letter{
-      max-width:820px;
-      background: linear-gradient(180deg,#fff,#fff);
-      border-radius:16px;
-      padding:28px;
-      box-shadow: 0 10px 40px rgba(20,30,60,0.06);
-      opacity:0;
-      transform: translateY(20px) scale(.995);
-      transition: opacity .9s ease, transform .9s ease;
-    }
-    .love-letter.visible{
-      opacity:1;
-      transform: translateY(0) scale(1);
-    }
-    .love-letter h2{ color: #ff4977; margin:0 0 8px 0 }
-    .love-letter p{ color:#333; line-height:1.5; font-size:1rem; }
+  /* love letter final */
+  .final {
+    margin-top:26px;
+    padding:22px;
+    border-radius:12px;
+    background:linear-gradient(#fff,#fff);
+    box-shadow: 0 10px 40px rgba(20,30,60,0.06);
+    opacity:0; transform: translateY(8px);
+    transition: opacity .9s ease, transform .9s ease;
+  }
+  .final.visible { opacity:1; transform: translateY(0); }
 
-    /* small helper */
-    .muted{ color:var(--muted); font-size:0.95rem }
-    .small{ font-size:0.9rem }
+  /* floating layer for emojis/balloons */
+  .floating { position:fixed; left:0; top:0; right:0; bottom:0; pointer-events:none; z-index:9999; overflow:visible; }
+  .float {
+    position:absolute; font-size:28px; will-change: transform, opacity; display:flex; align-items:center; justify-content:center;
+    text-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  }
 
-    /* responsive */
-    @media (max-width:760px){
-      .photo{ width:46vw; height:28vw }
-      .btn{ min-width:120px }
-    }
-  </style>
+  /* image modal (view full) */
+  .modal {
+    position:fixed; left:0; top:0; right:0; bottom:0; display:none; background: rgba(0,0,0,0.6); align-items:center; justify-content:center; z-index:10010;
+  }
+  .modal.show { display:flex; }
+  .modal img { max-width:94%; max-height:86%; border-radius:10px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+
+  /* footer small */
+  .footer-note { margin-top:8px; color:var(--muted); font-size:0.9rem; text-align:center; }
+
+  /* responsive tweaks */
+  @media (max-width:760px){
+    header.hero{ flex-direction:column; align-items:flex-start; gap:12px; }
+    .hero-left{ max-width:100% }
+    .photo-frame { height:48vw }
+    .photo-card{ padding:8px }
+  }
+</style>
 </head>
 <body>
-  <!-- ======= SECTION 1: HERO / TITLE ======= -->
-  <section id="hero">
-    <div class="container">
-      <h1>Happy Birthday, My Anukriti 💖</h1>
-      <div class="lead">Life is a sojourn but our journey is eternal — let's continue it!</div>
+  <div class="wrap">
 
-      <div style="margin-top:18px">
-        <button class="btn yes" onclick="goToSection('photos')">View memories & photos ✨</button>
-        <button class="btn" onclick="goToSection('questions')">Tell me now 💌</button>
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-left">
+        <h1>Happy Birthday, My Anukriti 💖</h1>
+        <div class="lead">Life is a sojourn but our journey is eternal — let's continue it!</div>
       </div>
 
-      <div style="margin-top:16px" class="small muted">Music is ready below — tap to start the surprise later ✨</div>
-
-      <!-- SoundCloud embed (your provided iframe). It allows autoplay but browsers may need a click first. -->
-      <div style="margin-top:18px; max-width:760px; margin-left:auto;margin-right:auto;">
-        <!-- Your SoundCloud iframe (auto_play=true). Keep as-is. -->
-        <iframe width="100%" height="140" scrolling="no" frameborder="no" allow="autoplay"
-          src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1712068935&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
-        <div style="font-size:10px;color:#999;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-          <a href="https://soundcloud.com/qasim-raza-830447418" target="_blank" style="color:#999;text-decoration:none">Qasim Raza</a> ·
-          <a href="https://soundcloud.com/qasim-raza-830447418/jhan-mein-aisa-kaun-hai" target="_blank" style="color:#999;text-decoration:none">jhan mein aisa kaun hai</a>
-        </div>
+      <div class="controls">
+        <button id="musicToggle" class="music-btn" title="Enable audio">Enable Music</button>
       </div>
+    </header>
 
-    </div>
-  </section>
-
-  <!-- ======= SECTION 2: PHOTOS ======= -->
-  <section id="photos">
-    <div class="container">
-      <h2 style="margin-top:0;color:#ff4977">Memories — our photos</h2>
-      <div class="muted small">(Replace these with your own photos by uploading to GitHub and using the raw link — instructions below.)</div>
-
-      <div class="photos" style="margin-top:18px">
-        <div class="photo">
-          <img id="photo1" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&q=80" alt="photo1">
-          <div class="caption">our smile that day</div>
+    <!-- PHOTOS -->
+    <section>
+      <div class="card">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+          <div style="flex:1 1 60%">
+            <h2 style="margin:0; color:#e23a6a;">Memories — our photos</h2>
+            <div class="caption" style="margin-top:6px; color:var(--muted)">Tap any photo to view full — images are shown fully (no cropping)</div>
+          </div>
+          <div style="flex:0 0 200px; text-align:right;">
+            <div class="small-muted" style="font-size:0.9rem">Soft music & subtle animations</div>
+          </div>
         </div>
 
-        <div class="photo">
-          <img id="photo2" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=1200&q=80" alt="photo2">
-          <div class="caption">adventures with you</div>
+        <div class="photos" style="margin-top:18px">
+          <div class="photo-card">
+            <div class="photo-frame" onclick="openModal('photo1')">
+              <img id="photo1img" src="https://raw.githubusercontent.com/Neothe15/happy-birthday-anukriti/refs/heads/main/photo1.jpg" alt="photo1">
+            </div>
+            <div class="caption">Our smile that day</div>
+          </div>
+
+          <div class="photo-card">
+            <div class="photo-frame" onclick="openModal('photo2')">
+              <img id="photo2img" src="https://raw.githubusercontent.com/Neothe15/happy-birthday-anukriti/refs/heads/main/photo2.jpg" alt="photo2">
+            </div>
+            <div class="caption">Adventures with you</div>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div style="margin-top:20px">
-        <button class="btn yes" onclick="goToSection('questions')">Ready for some questions? 💞</button>
-        <button class="btn" onclick="goToSection('hero')">Back</button>
-      </div>
-    </div>
-  </section>
+    <!-- QUESTIONS -->
+    <section>
+      <div class="card">
+        <h2 style="margin:0; color:#e23a6a;">A little heart-quiz 💘</h2>
+        <div style="color:var(--muted); margin-top:6px;">Answer from your heart — each “Yes” gives a small poetic surprise</div>
 
-  <!-- ======= SECTION 3: QUESTIONS (interactive) ======= -->
-  <section id="questions">
-    <div class="container">
-      <h2 style="margin-top:0;color:#ff4977">A little heart-quiz 💘</h2>
-      <div class="muted small">Answer from your heart — there are cute surprises for every Yes 💕</div>
+        <div class="questions" style="margin-top:18px">
+          <!-- Q1 -->
+          <div class="qcard" id="q1">
+            <div class="qtext">1) Are you ready for us?</div>
+            <div class="btnrow">
+              <button class="btn yes" onclick="onYes(1)">Yes 💕</button>
+              <button class="btn no" onclick="onNo(1)">No 😝</button>
+            </div>
+            <div id="quote1" class="quote" aria-live="polite"></div>
+          </div>
 
-      <div class="question-card" id="q1" style="margin-top:18px">
-        <div class="qtext">1) Are you ready for us?</div>
-        <div class="btnrow">
-          <button class="btn yes" onclick="answerQuestion(1, true)">Yes 💕</button>
-          <button class="btn no" onclick="answerQuestion(1, false)">No 😝</button>
+          <!-- Q2 -->
+          <div class="qcard" id="q2">
+            <div class="qtext">2) I am afraid my love for you will only accentuate — does that work?</div>
+            <div class="btnrow">
+              <button class="btn yes" onclick="onYes(2)">Yes 💞</button>
+              <button class="btn no" onclick="onNo(2)">No 😅</button>
+            </div>
+            <div id="quote2" class="quote"></div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="qcard" id="q3">
+            <div class="qtext">3) Would you sing with me when the night is soft and slow?</div>
+            <div class="btnrow">
+              <button class="btn yes" onclick="onYes(3)">Yes 🎵</button>
+              <button class="btn no" onclick="onNo(3)">No 🎧</button>
+            </div>
+            <div id="quote3" class="quote"></div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="qcard" id="q4">
+            <div class="qtext">4) Will you share warm wine and silly stories with me?</div>
+            <div class="btnrow">
+              <button class="btn yes" onclick="onYes(4)">Yes 🥂</button>
+              <button class="btn no" onclick="onNo(4)">No 🍵</button>
+            </div>
+            <div id="quote4" class="quote"></div>
+          </div>
+
+          <!-- Q5 -->
+          <div class="qcard" id="q5">
+            <div class="qtext">5) Do you promise to keep laughing with me, even over small cheese plates?</div>
+            <div class="btnrow">
+              <button class="btn yes" onclick="onYes(5)">Yes 🧀</button>
+              <button class="btn no" onclick="onNo(5)">No 😋</button>
+            </div>
+            <div id="quote5" class="quote"></div>
+          </div>
+        </div>
+
+        <div style="margin-top:18px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap">
+          <button class="btn" onclick="revealFinal()">Skip to surprise</button>
+          <button class="btn" onclick="scrollToId('final')">See final</button>
         </div>
       </div>
+    </section>
 
-      <div class="question-card" id="q2" style="margin-top:16px">
-        <div class="qtext">2) I am afraid my love for you will only accentuate, does that works?</div>
-        <div class="btnrow">
-          <button class="btn yes" onclick="answerQuestion(2, true)">Yes 💕</button>
-          <button class="btn no" onclick="answerQuestion(2, false)">No 😅</button>
+    <!-- FINAL -->
+    <section>
+      <div class="card final" id="finalCard">
+        <div id="finalContent">
+          <h2 style="margin:0; color:#e23a6a">💌 My Heart, For You — Anukriti</h2>
+          <p style="margin-top:10px; color:#333; line-height:1.6;">
+            Anukriti — every day spent with you feels like a gentle poem.
+            You are my calm and my celebration. I promise to walk beside you through every season —
+            laugh with you, listen to you, and protect the light in your smile.
+            On your birthday, I only wish for more shared sunrises and simple moments together.
+          </p>
+          <p style="margin-top:12px; font-weight:700">With all my love,<br><span style="color:#e23a6a">Utkarsh</span></p>
         </div>
       </div>
+      <div class="footer-note">Tip: if audio doesn't start on your phone, tap once anywhere and then press "Enable Music".</div>
+    </section>
 
-      <div style="margin-top:20px">
-        <button class="btn" onclick="goToSection('photos')">Back to photos</button>
-        <button class="btn yes" onclick="revealLetter()">Skip to surprise</button>
-      </div>
-    </div>
-  </section>
+    <div style="height:28px"></div>
+  </div>
 
-  <!-- ======= SECTION 4: LOVE LETTER (final) ======= -->
-  <section id="final">
-    <div class="container">
-      <div class="love-letter" id="loveLetter">
-        <h2>💌 My Heart, For You — Anukriti</h2>
-        <p>
-          Anukriti — every day spent with you feels like a gentle poem.
-          You are my calm and my celebration. I promise to walk beside you through every season —
-          laugh with you, listen to you, and protect the light in your smile.
-          On your birthday, I only wish for more shared sunrises and simple moments together.
-        </p>
+  <!-- floating layer -->
+  <div class="floating" id="floatingLayer"></div>
 
-        <p style="margin-top:14px;font-weight:700;">With all my love,<br><span style="color:#ff4977">Utkarsh</span></p>
-      </div>
+  <!-- image modal -->
+  <div class="modal" id="imgModal" onclick="closeModal()">
+    <img id="modalImg" src="" alt="Full view">
+  </div>
 
-      <div style="margin-top:20px" class="muted small">
-        Tip: if the music didn’t start automatically, tap any play button on the SoundCloud player above (browsers need a click).
-      </div>
+  <!-- Hidden SoundCloud iframe (attempt autoplay; browsers may still block) -->
+  <iframe id="scplayer"
+    style="position:absolute; left:-9999px; top:-9999px; width:1px; height:1px; opacity:0;"
+    frameborder="0"
+    allow="autoplay"
+    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1712068935&auto_play=true&hide_related=true&visual=false">
+  </iframe>
 
-      <div style="margin-top:18px">
-        <button class="btn" onclick="goToSection('hero')">Back to Top</button>
-      </div>
-    </div>
-  </section>
+<script>
+/* ====== Setup ====== */
+const quotes = {
+  1: "Tulips open like the soft promise of morning — so does my heart.",
+  2: "Love deepens like twilight: calm, certain, infinite.",
+  3: "If life is a song, I will always sing the chorus with you.",
+  4: "A warm glass, a warm laugh — I choose both, and I choose you.",
+  5: "Small plates, bright smiles, endless tomorrows — hand in hand."
+};
+const state = {1:false,2:false,3:false,4:false,5:false};
 
-  <!-- ======= SCRIPTS: behavior, balloons, confetti, answers tracking ======= -->
-  <script>
-    // smooth go to section
-    function goToSection(id){
-      document.getElementById(id).scrollIntoView({behavior:'smooth'});
-    }
+/* Small chime using WebAudio */
+function playChime(){
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.value = 880;
+    g.gain.setValueAtTime(0, ctx.currentTime);
+    g.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.9);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(); o.stop(ctx.currentTime + 0.9);
+  } catch(e) { /* ignore */ }
+}
 
-    // track answers, when both are yes -> reveal letter
-    const answers = {1:null, 2:null};
-    function answerQuestion(num, isYes){
-      answers[num] = isYes;
-      if(isYes){
-        // balloons + confetti + small celebration
-        launchBalloons();
-        confettiBurst();
-      } else {
-        // playful response
-        toast("Aww 😜 Try again when your heart agrees!");
-      }
+/* Utilities */
+function scrollToId(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+function toast(msg){
+  const el = document.createElement('div');
+  el.textContent = msg;
+  Object.assign(el.style,{position:'fixed',left:'50%',top:'18px',transform:'translateX(-50%)',background:'rgba(0,0,0,0.75)',color:'#fff',padding:'8px 12px',borderRadius:'999px',zIndex:99999});
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),2000);
+}
 
-      // if both answered yes, show letter after a small delay
-      if(answers[1] === true && answers[2] === true){
-        setTimeout(()=> {
-          revealLetter();
-          // also scroll to final section
-          goToSection('final');
-        }, 1100);
-      }
-    }
+/* ====== Floating animations ====== */
+function spawnFloat(emoji, leftVW, duration=4200, size=28){
+  const el = document.createElement('div');
+  el.className = 'float';
+  el.textContent = emoji;
+  el.style.left = leftVW + 'vw';
+  el.style.bottom = '-10vh';
+  el.style.fontSize = size + 'px';
+  el.style.opacity = 0;
+  el.style.transition = `transform ${duration/1000}s linear, opacity 0.6s`;
+  document.getElementById('floatingLayer').appendChild(el);
 
-    // reveal love letter with fade-in
-    function revealLetter(){
-      const L = document.getElementById('loveLetter');
-      L.classList.add('visible');
-      // soft confetti burst
-      confettiBurst();
-      // try to make SoundCloud play by focusing iframe (often browser needs interaction)
-      // (Note: iframe autoplay is best-effort; user may need to tap play on mobile)
-      // If SoundCloud doesn't start, the user can tap the player — we show a small hint
-      toast("Open your heart — and tap the player if music is silent.");
-    }
+  // trigger next frame
+  requestAnimationFrame(()=> {
+    el.style.opacity = 1;
+    el.style.transform = `translateY(-120vh) rotate(${(Math.random()*80)-40}deg)`;
+  });
 
-    // tiny toast message
-    function toast(text){
-      const el = document.createElement('div');
-      el.textContent = text;
-      el.style.position = 'fixed';
-      el.style.left = '50%';
-      el.style.top = '18px';
-      el.style.transform = 'translateX(-50%)';
-      el.style.background = 'rgba(0,0,0,0.7)';
-      el.style.color = '#fff';
-      el.style.padding = '8px 14px';
-      el.style.borderRadius = '999px';
-      el.style.boxShadow = '0 6px 18px rgba(0,0,0,0.2)';
-      el.style.zIndex = 9999;
-      document.body.appendChild(el);
-      setTimeout(()=> el.remove(), 2400);
-    }
+  setTimeout(()=> el.remove(), duration + 300);
+}
 
-    // confetti helper
-    function confettiBurst(){
-      try{
-        confetti({
-          particleCount: 130,
-          spread: 80,
-          origin: { y: 0.6 }
-        });
-      }catch(e){}
-    }
+function animateForQuestion(n){
+  if(n===1){
+    for(let i=0;i<8;i++) spawnFloat('🌷', 5 + Math.random()*90, 4200 + Math.random()*1200, 26 + Math.random()*6);
+  } else if(n===2){
+    for(let i=0;i<10;i++) spawnFloat('💖', 3 + Math.random()*94, 3500 + Math.random()*1000, 26 + Math.random()*10);
+  } else if(n===3){
+    const notes = ['🎵','🎶','🎼'];
+    for(let i=0;i<9;i++) spawnFloat(notes[Math.floor(Math.random()*notes.length)], 5 + Math.random()*90, 3800 + Math.random()*1600, 26);
+  } else if(n===4){
+    for(let i=0;i<6;i++) spawnFloat('🍷', 8 + Math.random()*80, 4200 + Math.random()*1400, 30);
+    try{ confetti({ particleCount: 30, spread: 40, origin: { y: 0.75 } }); } catch(e){}
+  } else if(n===5){
+    const icons = ['🧀','🌻'];
+    for(let i=0;i<10;i++) spawnFloat(icons[Math.floor(Math.random()*icons.length)], 5 + Math.random()*90, 4200 + Math.random()*1200, 24 + Math.random()*8);
+  }
+}
 
-    // BALLOONS: create many balloons that float up and 'pop' (scale out) after some time
-    function launchBalloons(){
-      const colors = ['#ffb3c7','#ffd6e1','#ff9fbf','#ffd9c7','#bfefff','#ffecb3'];
-      const count = 10;
-      for(let i=0;i<count;i++){
-        createBalloon(colors[Math.floor(Math.random()*colors.length)]);
-      }
-    }
+/* ====== Handlers for Yes/No ====== */
+function onYes(n){
+  if(state[n]) { toast('Already answered ❤️'); return; }
+  state[n] = true;
+  // show quote
+  const q = document.getElementById('quote'+n);
+  q.textContent = quotes[n];
+  q.classList.add('show');
+  // chime & animation
+  playChime();
+  animateForQuestion(n);
+  try{ confetti({ particleCount: 40, spread: 60, origin: { y: 0.7 } }); } catch(e){}
+  toast('Yay 💕');
 
-    function createBalloon(color){
-      const b = document.createElement('div');
-      b.className = 'balloon';
-      b.style.left = (10 + Math.random()*80) + 'vw';
-      b.style.background = color;
-      b.style.animation = 'floatBalloon ' + (4 + Math.random()*5) + 's linear forwards';
-      // small string element
-      const s = document.createElement('div');
-      s.className = 'string';
-      b.appendChild(s);
-      document.body.appendChild(b);
+  // if all yes -> reveal final after small delay
+  const all = Object.values(state).every(v=>v===true);
+  if(all){
+    setTimeout(()=> { revealFinal(); scrollToId('final'); }, 900);
+  }
+}
+function onNo(n){
+  toast("Aww 😜 Try again later!");
+}
 
-      // remove after finished float
-      const lifetime = 6000 + Math.random()*2400;
-      setTimeout(()=>{
-        // pop animation (scale + fade)
-        b.style.transition = 'transform .18s ease, opacity .18s ease';
-        b.style.transform = 'scale(0.2)';
-        b.style.opacity = '0';
-        setTimeout(()=> b.remove(), 200);
-      }, lifetime);
-    }
+/* ====== Reveal final letter ====== */
+function revealFinal(){
+  document.getElementById('finalCard').classList.add('visible');
+  try{ confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } }); } catch(e){}
+}
 
-    // If user uses keyboard nav or scroll, letter visibility may be needed
-    window.addEventListener('load', ()=>{
-      // nothing special for now
-    });
+/* ====== Image modal (view full) ====== */
+function openModal(id){
+  const src = document.getElementById(id + 'img').src;
+  document.getElementById('modalImg').src = src;
+  document.getElementById('imgModal').classList.add('show');
+}
+function closeModal(){ document.getElementById('imgModal').classList.remove('show'); }
 
-    // Helpful: pressing 'L' reveals letter (debug)
-    document.addEventListener('keydown', (e)=>{
-      if(e.key.toLowerCase() === 'l') revealLetter();
-    });
-  </script>
+/* ====== Small music helper ====== */
+const musicBtn = document.getElementById('musicToggle');
+let musicEnabled = false;
+musicBtn.addEventListener('click', ()=> {
+  musicEnabled = !musicEnabled;
+  if(musicEnabled){
+    musicBtn.textContent = 'Music Enabled';
+    // focus the soundcloud iframe (may help some browsers allow autoplay after click)
+    try{
+      document.getElementById('scplayer').focus();
+    }catch(e){}
+    toast('If music is blocked, tap the small player (top) once.');
+  } else {
+    musicBtn.textContent = 'Enable Music';
+    toast('Music toggled off visually (player cannot be fully controlled due to cross-origin).');
+  }
+});
+
+/* ====== Keyboard reveal (debug) ====== */
+document.addEventListener('keydown', e => {
+  if(e.key.toLowerCase() === 'l') revealFinal();
+});
+
+/* ====== Scroll reveal for quotes (gentle) ====== */
+const qcards = Array.from(document.querySelectorAll('.qcard'));
+window.addEventListener('scroll', ()=>{
+  const trigger = window.innerHeight * 0.85;
+  qcards.forEach(c=>{
+    const top = c.getBoundingClientRect().top;
+    if(top < trigger) c.classList.add('visible');
+  });
+});
+</script>
 </body>
 </html>
