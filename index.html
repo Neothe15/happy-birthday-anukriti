@@ -1,247 +1,397 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Happy Birthday, My Anukriti 💖</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #c7ceff, #e6e0ff);
-      color: #333;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
-      text-align: center;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Happy Birthday, My Anukriti 💖</title>
 
-    h1 {
-      font-size: 2.3em;
-      margin-top: 50px;
-      color: #5a4fcf;
-      text-shadow: 0 0 8px rgba(120, 90, 255, 0.3);
-      opacity: 0;
-      animation: fadeIn 2.5s ease forwards;
-    }
+<!-- confetti lib (optional but nice) -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
-    h1 small {
-      display: block;
-      font-size: 0.6em;
-      margin-top: 10px;
-      color: #6c63ff;
-    }
+<style>
+  :root{
+    --lav1: #eef4ff;
+    --lav2: #e9f0ff;
+    --accent: #5b3fc7;
+    --muted: #59607a;
+    --card: rgba(255,255,255,0.98);
+  }
+  *{ box-sizing: border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    font-family: "Poppins", Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(160deg, var(--lav1), var(--lav2));
+    color:#222;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.45;
+    scroll-behavior:smooth;
+  }
 
-    .photo {
-      width: 220px;
-      height: auto;
-      margin: 20px;
-      border-radius: 16px;
-      box-shadow: 0 6px 25px rgba(80, 60, 160, 0.25);
-      transition: transform 0.4s ease, opacity 1.5s ease;
-      opacity: 0;
-      animation: fadeInUp 2s ease forwards;
-      animation-delay: 1.2s;
-    }
+  .wrap{ max-width:960px; margin:32px auto; padding:18px; }
 
-    .photo:hover {
-      transform: scale(1.05);
-    }
+  header.hero{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+    border-radius:12px; padding:18px;
+    box-shadow: 0 14px 40px rgba(60,60,100,0.06);
+  }
+  .hero-left { flex:1 }
+  .title { font-family: 'Playfair Display', serif; font-size:1.6rem; color:var(--accent); margin:0 }
+  .subtitle{ color:var(--muted); font-size:0.95rem; margin-top:6px }
 
-    .question {
-      margin: 40px 0;
-      font-size: 1.3em;
-      color: #4b3ca7;
-    }
+  /* audio controls */
+  .audio-controls { display:flex; gap:10px; align-items:center }
+  .btn { padding:8px 12px; border-radius:10px; cursor:pointer; border:none; background: linear-gradient(90deg,#8f7bff,#6b4dff); color:white; font-weight:700 }
+  .btn.ghost { background:transparent; border:2px solid rgba(0,0,0,0.06); color:#222 }
 
-    button {
-      background: #8e7aff;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      margin: 10px;
-      border-radius: 25px;
-      font-size: 1em;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(80, 60, 160, 0.2);
-    }
+  /* photos */
+  .photos { display:flex; gap:18px; justify-content:center; margin-top:22px; flex-wrap:wrap; }
+  .photo { width:250px; border-radius:12px; overflow:hidden; background:var(--card); padding:8px; box-shadow: 0 12px 36px rgba(60,60,90,0.06); display:flex; align-items:center; justify-content:center }
+  .photo img { width:100%; height:150px; object-fit:contain; border-radius:8px; display:block; }
 
-    button:hover {
-      background: #a99dff;
-      transform: translateY(-3px);
-    }
+  /* questions card */
+  .card { margin-top:20px; background:var(--card); padding:16px; border-radius:12px; box-shadow: 0 12px 36px rgba(60,60,90,0.05) }
+  .questions { display:flex; flex-direction:column; gap:12px; margin-top:8px }
+  .q { padding:12px; border-radius:10px; background:linear-gradient(180deg,#fff,#fbfdff) }
+  .q p { margin:0 0 10px 0; font-weight:700; color:#223 }
+  .btn-row { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:6px }
+  .small-quote { margin-top:6px; color:#5b3fa3; font-style:italic; opacity:0; transform:translateY(6px); transition:opacity .45s, transform .45s; text-align:center }
+  .small-quote.show { opacity:1; transform:translateY(0) }
 
-    .hearts {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: -1;
-    }
+  /* floating layer */
+  .floating { position:fixed; left:0; top:0; right:0; bottom:0; pointer-events:none; z-index:9999; overflow:visible }
 
-    .heart {
-      position: absolute;
-      color: rgba(255, 120, 180, 0.6);
-      animation: float 6s linear infinite;
-    }
+  .float-item { position:absolute; width:44px; height:44px; will-change:transform,opacity; transform-origin:center; }
 
-    @keyframes float {
-      0% {
-        transform: translateY(100vh) scale(0.8);
-        opacity: 0;
-      }
-      50% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-10vh) scale(1.3);
-        opacity: 0;
-      }
-    }
+  /* love letter (hidden until all yes) */
+  .love-letter {
+    margin-top:22px;
+    padding:20px;
+    border-radius:12px;
+    background: linear-gradient(180deg,#ffffff,#fbfbff);
+    box-shadow: 0 18px 60px rgba(60,60,90,0.06);
+    opacity:0; transform:translateY(12px);
+    transition: opacity .9s ease, transform .9s ease;
+    text-align:left;
+  }
+  .love-letter.show { opacity:1; transform:translateY(0) }
+  .love-letter h2 { margin:0; color:var(--accent); font-family:'Playfair Display', serif }
 
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
-    }
+  /* secret ending (small) */
+  .secret { margin-top:18px; text-align:center; color:var(--accent); font-weight:700; opacity:0; transition:opacity 1.2s ease }
+  .secret.show { opacity:1 }
 
-    @keyframes fadeInUp {
-      0% {
-        transform: translateY(40px);
-        opacity: 0;
-      }
-      100% {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
+  /* music player small bar */
+  .music-fixed { position:fixed; right:14px; bottom:14px; z-index:10010 }
+  .music-bar { width:220px; height:60px; border-radius:10px; overflow:hidden; background:var(--card); box-shadow: 0 12px 36px rgba(60,60,90,0.08); display:flex; align-items:center; justify-content:center }
 
-    footer {
-      margin-top: 50px;
-      font-size: 0.9em;
-      color: #555;
-      padding-bottom: 50px;
-    }
-
-    .audio-container {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-      margin-top: 40px;
-    }
-
-    iframe {
-      border-radius: 10px;
-      width: 300px;
-      height: 130px;
-    }
-  </style>
+  @media (max-width:760px){
+    .photo { width:44vw }
+    .photo img { height:40vw }
+    header.hero { flex-direction:column; align-items:flex-start; gap:12px }
+    .music-fixed { left:10px; right:auto }
+  }
+</style>
 </head>
 <body>
-  <div class="hearts" id="hearts"></div>
+  <div class="wrap">
+    <header class="hero">
+      <div class="hero-left">
+        <div class="title">Happy Birthday, My Anukriti 💖</div>
+        <div class="subtitle">Lavender evenings, gentle music, and moments made of us.</div>
+      </div>
 
-  <h1>
-    Happy Birthday, My Anukriti 💖
-    <small>Life is a sojourn, but our journey is eternal — let’s continue it!</small>
-  </h1>
+      <div class="audio-controls">
+        <button id="enableAudio" class="btn">Enable Audio</button>
+        <button id="playSong" class="btn ghost">Play / Retry</button>
+      </div>
+    </header>
 
-  <div>
-    <img
-      src="https://raw.githubusercontent.com/Neothe15/happy-birthday-anukriti/refs/heads/main/photo1.jpg"
-      class="photo"
-      alt="Anukriti Photo 1"
-    />
-    <img
-      src="https://raw.githubusercontent.com/Neothe15/happy-birthday-anukriti/refs/heads/main/photo2.jpg"
-      class="photo"
-      alt="Anukriti Photo 2"
-    />
+    <!-- PHOTOS -->
+    <div class="photos" role="list" aria-label="Photos">
+      <div class="photo" role="listitem"><img id="p1" src="https://raw.githubusercontent.com/Neothe15/happy-birthday-anukriti/refs/heads/main/photo1.jpg" alt="photo1"></div>
+      <div class="photo" role="listitem"><img id="p2" src="https://raw.githubusercontent.com/Neothe15/happy-birthday-anukriti/refs/heads/main/photo2.jpg" alt="photo2"></div>
+    </div>
+
+    <!-- QUESTIONS -->
+    <div class="card" aria-live="polite">
+      <h3 style="margin:0;color:var(--accent);font-family:'Playfair Display', serif">A little heart-quiz</h3>
+
+      <div class="questions">
+        <div class="q" id="q1"><p>1) Are you ready for us?</p>
+          <div class="btn-row">
+            <button onclick="onYes(1)" class="btn">Yes 💕</button>
+            <button onclick="onNo(1)" class="btn ghost">No 😅</button>
+          </div>
+          <div id="quote1" class="small-quote"></div>
+        </div>
+
+        <div class="q" id="q2"><p>2) I am afraid my love for you will only accentuate — does that work?</p>
+          <div class="btn-row">
+            <button onclick="onYes(2)" class="btn">Yes 💞</button>
+            <button onclick="onNo(2)" class="btn ghost">No 😅</button>
+          </div>
+          <div id="quote2" class="small-quote"></div>
+        </div>
+
+        <div class="q" id="q3"><p>3) Would you sing with me when the night is soft and slow?</p>
+          <div class="btn-row">
+            <button onclick="onYes(3)" class="btn">Yes 🎵</button>
+            <button onclick="onNo(3)" class="btn ghost">No 🎧</button>
+          </div>
+          <div id="quote3" class="small-quote"></div>
+        </div>
+
+        <div class="q" id="q4"><p>4) Will you share warm wine and silly stories with me?</p>
+          <div class="btn-row">
+            <button onclick="onYes(4)" class="btn">Yes 🥂</button>
+            <button onclick="onNo(4)" class="btn ghost">No 🍵</button>
+          </div>
+          <div id="quote4" class="small-quote"></div>
+        </div>
+
+        <div class="q" id="q5"><p>5) Do you promise to keep laughing with me, even over small cheese plates?</p>
+          <div class="btn-row">
+            <button onclick="onYes(5)" class="btn">Yes 🧀</button>
+            <button onclick="onNo(5)" class="btn ghost">No 😋</button>
+          </div>
+          <div id="quote5" class="small-quote"></div>
+        </div>
+
+        <div class="q" id="q6"><p>6) Will you hold my hand through little storms and bright mornings?</p>
+          <div class="btn-row">
+            <button onclick="onYes(6)" class="btn">Yes 🤝</button>
+            <button onclick="onNo(6)" class="btn ghost">No 😅</button>
+          </div>
+          <div id="quote6" class="small-quote"></div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:12px">
+        <button class="btn ghost" onclick="revealLetter()">Skip to love letter</button>
+      </div>
+    </div>
+
+    <!-- love letter (hidden until all yes) -->
+    <div class="love-letter" id="loveLetter" role="region" aria-live="polite">
+      <h2>💌 A Letter For You, Anukriti</h2>
+      <p style="margin-top:10px; color:#333; line-height:1.6;">
+        Happy Birthday, My Anukriti 💖<br><br>
+        Life is a sojourn but our journey is eternal — let's continue it!<br><br>
+        In the quiet mornings and the warm evenings, I find my favorite moments with you.
+        Thank you for being the gentle song I wake up to and the calm I fall asleep next to.
+      </p>
+      <p style="font-weight:700; margin-top:12px; color:var(--accent)">With all my love,<br>Utkarsh 💞</p>
+    </div>
+
+    <div style="height:28px"></div>
+    <div class="secret" id="secretText">I love you more than words ever could. 💞</div>
+    <div style="height:180px"></div>
   </div>
 
-  <div id="questions"></div>
+  <!-- floating layer for animations -->
+  <div class="floating" id="floating"></div>
 
-  <div class="audio-container">
-    <!-- Your first SoundCloud song -->
-    <iframe
-      scrolling="no"
-      frameborder="no"
-      allow="autoplay"
-      src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1712068935&color=%23b3aaff&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false"
-    ></iframe>
-
-    <!-- Married Life SoundCloud -->
-    <iframe
-      id="marriedLife"
-      scrolling="no"
-      frameborder="no"
-      allow="autoplay"
-      src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A222963773&color=%239d89ff&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false"
-    ></iframe>
+  <!-- Visible small SoundCloud player for Married Life (The Wild Conductor) -->
+  <div class="music-fixed">
+    <div class="music-bar" title="Married Life (Piano Version) — starts after 20s">
+      <iframe id="scPlayer" width="100%" height="48" scrolling="no" frameborder="no" allow="autoplay"
+        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A222963773&color=%239d89ff&auto_play=false&hide_related=true&visual=false">
+      </iframe>
+    </div>
   </div>
 
-  <footer>Made with endless love by Utkarsh 💙</footer>
+<script>
+/* ========== Config ========== */
+const quotes = {
+  1: "You make ordinary days extraordinary.",
+  2: "My love deepens every day with you.",
+  3: "Let's sing the small songs of our life together.",
+  4: "Warm wine, warm laughter — I choose you.",
+  5: "Cheese, smiles, and you: perfect evenings.",
+  6: "I'll hold your hand through every weather."
+};
 
-  <script>
-    const questions = [
-      "Are you ready for us?",
-      "I’m afraid my love for you will only accentuate — does that work?",
-      "Would you still choose me in every universe?",
-      "Do you know you’re the calm in my chaos?",
-      "Can I hold your heart forever?",
-    ];
+const answered = {1:false,2:false,3:false,4:false,5:false,6:false};
 
-    const container = document.getElementById("questions");
+/* ========== Floating animations (SVG small icons) ========== */
+const floating = document.getElementById('floating');
 
-    questions.forEach((q, i) => {
-      const div = document.createElement("div");
-      div.classList.add("question");
-      div.innerHTML = `
-        <p>${q}</p>
-        <button onclick="respondYes(${i})">Yes 💖</button>
-        <button onclick="respondNo(${i})">No 😜</button>
-      `;
-      container.appendChild(div);
-    });
+function spawnItem(svgMarkup, leftPx, duration=5000, size=44){
+  const el = document.createElement('div');
+  el.className = 'float-item';
+  el.innerHTML = svgMarkup;
+  el.style.left = (leftPx || Math.random()*(window.innerWidth-80)) + 'px';
+  el.style.bottom = '-80px';
+  el.style.opacity = '0';
+  el.style.width = size + 'px';
+  el.style.height = size + 'px';
+  floating.appendChild(el);
 
-    const loveQuotes = [
-      "You just made my heart smile again 💕",
-      "Every yes from you is a lifetime promise 🌸",
-      "You’re my favorite part of every story ✨",
-      "My love grows with every heartbeat 💗",
-      "Together, we are poetry in motion 🌷",
-    ];
+  // trigger movement
+  requestAnimationFrame(()=> {
+    el.style.transition = `transform ${duration/1000}s cubic-bezier(.2,.9,.3,1), opacity .6s`;
+    el.style.transform = `translateY(-120vh) rotate(${(Math.random()*80)-40}deg) scale(${0.9 + Math.random()*0.4})`;
+    el.style.opacity = '1';
+  });
 
-    function respondYes(index) {
-      alert(loveQuotes[index]);
-      createHearts();
+  // pop/remove
+  setTimeout(()=> {
+    el.style.transition = 'transform .15s ease, opacity .15s ease';
+    el.style.transform += ' scale(.15)';
+    el.style.opacity = '0';
+    setTimeout(()=> el.remove(), 180);
+  }, duration - 400);
+}
+
+/* small SVGs for items */
+function svgHeart(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 20s-6.5-4.3-8.2-6.2C2.6 11.7 4 7.9 7.1 7.9c1.6 0 2.4 1.2 2.9 1.8.5-.6 1.3-1.8 2.9-1.8 3.1 0 4.5 3.8 3.3 5.9C18.5 15.7 12 20 12 20z" fill="#ff6fb0"/></svg>` }
+function svgTulip(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 2c2.7 0 4.5 1.9 5 3.8.5 2-1.1 4.1-3.6 4.9-1 .3-1.9.6-2.4 1.1-.5-.5-1.4-.8-2.4-1.1C8.1 9.9 6.5 7.8 7 5.8 7.5 3.9 9.3 2 12 2z" fill="#ff97c1"/><path d="M12 22v-6" stroke="#61314b" stroke-width="1.2" stroke-linecap="round"/></svg>` }
+function svgLily(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 2c2 2 3 2.2 5 2 1.5-.2 2.5 1 2.6 2.5.1 1.4-.8 2.6-2 3.6-1.6 1.4-3.6 2.2-5.6 2.2s-4-.8-5.6-2.2C6 10 5 8.8 5.1 7.4c.1-1.5 1.1-2.7 2.6-2.5 2 .2 3 . 2 5-2z" fill="#ffd9e6"/></svg>` }
+function svgSunflower(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><circle cx="12" cy="12" r="6" fill="#ffd36b"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke="#c57a00" stroke-width="1.1" stroke-linecap="round"/></svg>` }
+function svgWineCheese(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M9 3h6v6a3 3 0 01-3 3 3 3 0 01-3-3V3z" fill="#b02b3b"/><path d="M12 12v7" stroke="#442022" stroke-width="1.2" stroke-linecap="round"/><path d="M3 18l18 0 0 2-18 0z" fill="#ffd66b"/></svg>` }
+function svgNote(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M9 17V5l10-2v12" stroke="#2f2f2f" stroke-width="1.4" stroke-linecap="round"/></svg>` }
+function svgStar(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 2l2.5 6.1L21 9l-5 3.6L17.5 21 12 17.6 6.5 21 8 12.6 3 9l6.5-.9L12 2z" fill="#ffd36b"/></svg>` }
+
+/* ========== Effects setup per question ========== */
+function onYes(n){
+  if(answered[n]) { smallToast('Already said yes ❤️'); return; }
+  answered[n] = true;
+  document.getElementById('quote'+n).textContent = quotes[n];
+  document.getElementById('quote'+n).classList.add('show');
+
+  // small chime
+  playChime();
+
+  // trigger unique floating items
+  if(n===1){
+    for(let i=0;i<8;i++) spawnItem(svgHeart(), Math.random()*(window.innerWidth-120), 4200+Math.random()*1200);
+  } else if(n===2){
+    for(let i=0;i<7;i++){
+      spawnItem([svgTulip(), svgLily()][Math.floor(Math.random()*2)], Math.random()*(window.innerWidth-120), 4800+Math.random()*1200);
     }
+  } else if(n===3){
+    for(let i=0;i<8;i++) spawnItem(svgSunflower(), Math.random()*(window.innerWidth-120), 4500+Math.random()*1600);
+  } else if(n===4){
+    for(let i=0;i<6;i++) spawnItem(svgWineCheese(), Math.random()*(window.innerWidth-120), 5200+Math.random()*1200);
+    try{ confetti({ particleCount: 40, spread: 45, origin: { y: 0.75 } }); } catch(e){}
+  } else if(n===5){
+    for(let i=0;i<9;i++) spawnItem(svgNote(), Math.random()*(window.innerWidth-120), 4000+Math.random()*1400);
+  } else if(n===6){
+    for(let i=0;i<10;i++) spawnItem(svgStar(), Math.random()*(window.innerWidth-120), 5200+Math.random()*1200);
+    try{ confetti({ particleCount: 70, spread: 80, origin: { y: 0.8 } }); } catch(e){}
+  }
 
-    function respondNo(index) {
-      alert("Try again 😉 Love always wins!");
+  smallToast('Yay 💕');
+
+  // if all answered yes -> reveal love letter + secret
+  const all = Object.values(answered).every(v => v===true);
+  if(all){
+    setTimeout(()=> {
+      revealLetter();
+      document.getElementById('secretText').classList.add('show');
+    }, 900);
+  }
+}
+
+function onNo(n){
+  smallToast("Aww 😅 maybe later!");
+}
+
+/* small toast helper */
+function smallToast(text){
+  const t = document.createElement('div');
+  t.textContent = text;
+  Object.assign(t.style, { position:'fixed', left:'50%', top:'18px', transform:'translateX(-50%)',
+    background:'rgba(0,0,0,0.7)', color:'#fff', padding:'8px 12px', borderRadius:'999px', zIndex:10020 });
+  document.body.appendChild(t);
+  setTimeout(()=> t.remove(), 2000);
+}
+
+/* simple chime using WebAudio */
+function playChime(){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine'; o.frequency.value = 880;
+    g.gain.setValueAtTime(0, ctx.currentTime); g.gain.linearRampToValueAtTime(0.12, ctx.currentTime+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+0.9);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(); o.stop(ctx.currentTime+0.9);
+  }catch(e){}
+}
+
+/* reveal love letter */
+function revealLetter(){
+  document.getElementById('loveLetter').classList.add('show');
+  try{ confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } }); } catch(e){}
+}
+
+/* ========== SoundCloud player control (start after 20s) ========== */
+const scFrame = document.getElementById('scPlayer');
+let scWidget = null;
+
+function setupSoundCloudWidget(){
+  try{
+    // create widget instance using SC API (widget script not required to be loaded as we directly use postMessage)
+    // But common pattern: create SC Widget if SC API present - many browsers allow basic iframe control by resetting src.
+    // We'll attempt to set src with auto_play=true after 20s (user gesture may still be required).
+  }catch(e){}
+}
+
+/* start married life by toggling auto_play param (best-effort) */
+function startMarriedLife(){
+  try{
+    const iframe = document.getElementById('scPlayer');
+    if(!iframe) return;
+    // change src to auto_play=true to request autoplay
+    if(iframe.src.indexOf('auto_play=true') === -1){
+      iframe.src = iframe.src.replace('auto_play=false', 'auto_play=true');
+    } else {
+      // if already true, try to post a play command through widget if available later
+      try{ scWidget && scWidget.play(); }catch(e){}
     }
+  }catch(e){}
+}
 
-    function createHearts() {
-      for (let i = 0; i < 10; i++) {
-        const heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.innerHTML = "💜";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = 3 + Math.random() * 3 + "s";
-        document.getElementById("hearts").appendChild(heart);
-        setTimeout(() => heart.remove(), 6000);
-      }
-    }
+/* attempt to start after 20s */
+setTimeout(()=> {
+  startMarriedLife();
+}, 20000);
 
-    // Start "Married Life" after 20 seconds
-    setTimeout(() => {
-      const frame = document.getElementById("marriedLife");
-      const src = frame.src;
-      frame.src = src.replace("auto_play=false", "auto_play=true");
-    }, 20000);
-  </script>
+/* Enable Audio button attempts a user gesture to allow autoplay */
+document.getElementById('enableAudio').addEventListener('click', ()=>{
+  // re-set iframe src to include auto_play=true (user gesture)
+  try{ startMarriedLife(); }catch(e){}
+  // small feedback
+  smallToast('Tried to enable audio — if blocked, tap play on the small player.');
+});
+
+/* play/retry button */
+document.getElementById('playSong').addEventListener('click', ()=>{
+  try{ startMarriedLife(); }catch(e){}
+  smallToast('Play command sent (if blocked please tap the player).');
+});
+
+/* Reveal secret when user scrolls near bottom */
+window.addEventListener('scroll', ()=> {
+  const secret = document.getElementById('secretText');
+  if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 220) secret.classList.add('show');
+});
+
+/* ========== Nice initial ambiance ========== */
+setTimeout(()=> { createInitialFloat(); }, 700);
+function createInitialFloat(){
+  // gentle few items at top for ambiance
+  spawnItem(svgTulip(), 40, 9000);
+  spawnItem(svgStar(), window.innerWidth * 0.6, 10000);
+  spawnItem(svgHeart(), window.innerWidth * 0.2, 8500);
+}
+
+/* helper: random safe width on resize */
+window.addEventListener('resize', ()=> {} );
+</script>
 </body>
 </html>
