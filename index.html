@@ -157,13 +157,9 @@
     <div id="loveLetter" class="love-letter" role="region" aria-live="polite">
       <h2>💌 A Letter For You, Anukriti</h2>
       <p style="margin-top:10px; color:#333; line-height:1.6;">
-        Dear Anukriti —<br><br>
-        On your birthday I want to remind you how deeply you are loved. You are the melody in my mornings,
-        the calm in my evenings, and the reason small moments feel grand. I promise to laugh with you, share quiet wines,
-        grow tulips with you in small pots, and hold your hand through every storm and sunrise.<br><br>
-        Thank you for being you — gentle, bright, and endlessly beautiful.<br><br>
-        With all my heart,<br>
-        Utkarsh 💞
+        Anukriti, you are the poetry my soul waited a lifetime to hear.<br><br>
+        With you, every silence feels like a melody, and every heartbeat finds its rhythm.<br><br>
+        Forever yours — Utkarsh 💖
       </p>
     </div>
 
@@ -177,7 +173,7 @@
 
   <!-- SoundCloud player (Married Life - The Wild Conductor) -->
   <div class="music-fixed" aria-hidden="false">
-    <div class="music-bar" title="Married Life (Piano Version) — starts after 20s">
+    <div class="music-bar" title="Married Life (Piano Version)">
       <iframe id="scPlayer" width="100%" height="48" scrolling="no" frameborder="no" allow="autoplay"
         src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A222963773&color=%239d89ff&auto_play=false&hide_related=true&visual=false">
       </iframe>
@@ -185,7 +181,7 @@
   </div>
 
 <script>
-/* ====== Config & text ====== */
+/* ====== Text & state ====== */
 const quotes = {
   1: "You make ordinary days extraordinary.",
   2: "Tulips always remind me of you — gentle and bright.",
@@ -195,6 +191,7 @@ const quotes = {
   6: "Through storms and mornings, always together."
 };
 const answered = {1:false,2:false,3:false,4:false,5:false,6:false};
+let musicStarted = false; // track first-yes autoplay trigger
 
 /* ====== Floating spawner ====== */
 const floating = document.getElementById('floating');
@@ -204,7 +201,7 @@ function spawnItem(svgMarkup, leftPx, duration=5200, size=52){
   el.className = 'float-item';
   el.innerHTML = svgMarkup;
   el.style.left = (leftPx ?? Math.random()*(window.innerWidth-120)) + 'px';
-  el.style.bottom = '-100px';
+  el.style.bottom = '-120px';
   el.style.opacity = '0';
   el.style.width = size + 'px';
   el.style.height = size + 'px';
@@ -212,11 +209,12 @@ function spawnItem(svgMarkup, leftPx, duration=5200, size=52){
 
   requestAnimationFrame(()=> {
     el.style.transition = `transform ${duration/1000}s cubic-bezier(.18,.9,.3,1), opacity .6s`;
-    el.style.transform = `translateY(-120vh) rotate(${(Math.random()*80)-40}deg) scale(${0.85 + Math.random()*0.4})`;
+    el.style.transform = `translateY(-120vh) rotate(${(Math.random()*80)-40}deg) scale(${0.9 + Math.random()*0.4})`;
     el.style.opacity = '1';
   });
 
   setTimeout(()=> {
+    // pop
     el.style.transition = 'transform .18s ease, opacity .18s ease';
     el.style.transform += ' scale(.12)';
     el.style.opacity = '0';
@@ -234,26 +232,31 @@ function svgNote(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%">
 function svgWineCheese(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M9 3h6v6a3 3 0 01-3 3 3 3 0 01-3-3V3z" fill="#d63b4a"/><path d="M12 12v7" stroke="#442022" stroke-width="1.2" stroke-linecap="round"/><path d="M3 18h18v2H3z" fill="#ffd66b"/></svg>` }
 function svgStar(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 2l2.5 6.1L21 9l-5 3.6L17.5 21 12 17.6 6.5 21 8 12.6 3 9l6.5-.9L12 2z" fill="#ffd36b"/></svg>` }
 
-/* ====== Actions for each question exactly as requested ====== */
-const answered = {1:false,2:false,3:false,4:false,5:false,6:false};
-
+/* ====== Actions for each question (exact mapping) ====== */
 function onYes(n){
   if(answered[n]) { smallToast('Already answered ❤️'); return; }
   answered[n] = true;
   document.getElementById('quote'+n).textContent = quotes[n];
   document.getElementById('quote'+n).classList.add('show');
 
+  // start music on first yes (user gesture)
+  if(!musicStarted){
+    musicStarted = true;
+    startSoundCloud();
+  }
+
+  // chime
   playChime();
 
   if(n===1){
     // Balloons + hearts
     for(let i=0;i<8;i++){
-      spawnItem(Math.random() < 0.5 ? svgHeartBalloon() : svgHeartSmall(), Math.random()*(window.innerWidth-120), 4200 + Math.random()*1000, 52);
+      spawnItem(Math.random() < 0.6 ? svgHeartBalloon() : svgHeartSmall(), Math.random()*(window.innerWidth-120), 4200 + Math.random()*1000, 52);
     }
   } else if(n===2){
-    // Tulips emphasized (more tulips + lilies)
+    // Tulips emphasized (many tulips + some lilies)
     for(let i=0;i<12;i++){
-      const svg = (Math.random() < 0.75) ? svgTulip() : svgLily();
+      const svg = (Math.random() < 0.78) ? svgTulip() : svgLily();
       spawnItem(svg, Math.random()*(window.innerWidth-120), 4800 + Math.random()*1200, 58);
     }
   } else if(n===3){
@@ -307,28 +310,34 @@ function playChime(){
   }catch(e){}
 }
 
-/* ====== SoundCloud (Married Life) start after 20s (best-effort) ====== */
+/* ====== SoundCloud control: start on user gesture (first Yes) or button ====== */
 const scIframe = document.getElementById('scPlayer');
 function startSoundCloud(){
   try{
     if(!scIframe) return;
+    // flip auto_play to true (best-effort, soundcloud will play if allowed by browser)
     if(scIframe.src.indexOf('auto_play=true') === -1){
       scIframe.src = scIframe.src.replace('auto_play=false','auto_play=true');
     }
   }catch(e){}
 }
-setTimeout(()=> startSoundCloud(), 20000);
 
-/* Enable / Retry audio */
-document.getElementById('enableAudio').addEventListener('click', ()=> { try{ startSoundCloud(); }catch(e){}; smallToast('Attempted to enable audio — if blocked, tap the player.'); });
-document.getElementById('retryAudio').addEventListener('click', ()=> { try{ startSoundCloud(); }catch(e){}; smallToast('Retry triggered.'); });
+/* enable / retry controls */
+document.getElementById('enableAudio').addEventListener('click', ()=>{
+  startSoundCloud();
+  smallToast('Attempted to enable audio — if blocked, tap play on the player.');
+});
+document.getElementById('retryAudio').addEventListener('click', ()=>{
+  startSoundCloud();
+  smallToast('Retry triggered.');
+});
 
-/* initial ambient tulips/hearts */
+/* initial ambient tulips/hearts to hint animation works */
 setTimeout(()=> {
-  spawnItem(svgTulip(), Math.min(60, window.innerWidth-120), 9000, 60);
-  spawnItem(svgHeartSmall(), Math.min(window.innerWidth*0.25, window.innerWidth-120), 8500, 52);
+  spawnItem(svgTulip(), Math.min(60, window.innerWidth-120), 9200, 60);
+  spawnItem(svgHeartSmall(), Math.min(window.innerWidth*0.25, window.innerWidth-120), 8600, 52);
   spawnItem(svgStar(), Math.min(window.innerWidth*0.6, window.innerWidth-120), 10000, 52);
-}, 700);
+}, 900);
 
 /* reveal secret on scroll near bottom */
 window.addEventListener('scroll', ()=> {
