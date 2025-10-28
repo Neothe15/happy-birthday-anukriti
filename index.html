@@ -1,264 +1,419 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Happy Birthday, My Anukriti 💖</title>
 
+  <!-- confetti lib -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
   <style>
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #fff7fa, #fff0f5);
-      color: #333;
-      text-align: center;
-      scroll-behavior: smooth;
-      overflow-x: hidden;
+    /* ---------- THEME ---------- */
+    :root{
+      --bg-1: #fffafc;
+      --bg-2: #fff6f8;
+      --card: #ffffff;
+      --accent: #ff6b9f;   /* pink */
+      --muted: #6b7280;
+      --soft: rgba(255,107,159,0.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color:#222;
+      background: linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      height:100vh;
+      overflow:auto;
+      scroll-behavior:smooth;
+      scroll-snap-type: y mandatory;
     }
 
-    h1 {
-      font-size: 2.2rem;
-      color: #e43b77;
-      margin-top: 2rem;
-      text-shadow: 0 0 20px rgba(255, 150, 180, 0.4);
-      animation: fadeIn 1.5s ease;
+    /* ---------- LAYOUT (full-screen sections) ---------- */
+    section{
+      min-height:100vh;
+      padding:40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:18px;
+      scroll-snap-align:start;
     }
 
-    .subtitle {
-      font-size: 1rem;
-      color: #666;
-      margin-bottom: 2rem;
-      animation: fadeIn 2s ease;
+    .container{
+      width:100%;
+      max-width:980px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.92));
+      border-radius:18px;
+      box-shadow: 0 10px 40px rgba(20,30,60,0.08);
+      padding:28px;
+      text-align:center;
     }
 
-    section {
-      margin: 4rem auto;
-      max-width: 600px;
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: 16px;
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.05);
-      padding: 30px 20px;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.8s ease;
+    h1{
+      margin:0;
+      font-size:2rem;
+      color: #ff4977;
+      letter-spacing:0.2px;
+    }
+    .lead{
+      color:var(--muted);
+      margin-top:6px;
+      font-size:1rem;
     }
 
-    section.visible {
-      opacity: 1;
-      transform: translateY(0);
+    /* ---------- photos ---------- */
+    .photos{
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      margin-top:18px;
+      flex-wrap:wrap;
+    }
+    .photo{
+      width:260px;
+      height:180px;
+      border-radius:14px;
+      overflow:hidden;
+      background:linear-gradient(180deg, #fff, #f9f6fb);
+      box-shadow: 0 8px 30px rgba(20,30,60,0.06);
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .photo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .photo .caption{
+      position:absolute;
+      left:10px; bottom:8px;
+      background: rgba(255,255,255,0.75);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:0.9rem;
+      color:#333;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     }
 
-    .photo-section {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
+    /* ---------- questions ---------- */
+    .question-card{
+      max-width:760px;
+      background:linear-gradient(180deg,#fff,#fff);
+      border-radius:16px;
+      padding:22px;
+      box-shadow: 0 8px 28px rgba(20,30,60,0.06);
+      margin-top:12px;
     }
-
-    .photo {
-      width: 280px;
-      height: 200px;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    .qtext{
+      font-size:1.15rem;
+      color:#333;
+      margin-bottom:12px;
     }
-
-    .photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .btnrow{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn{
+      background:transparent;
+      border:2px solid rgba(30,40,60,0.08);
+      padding:10px 18px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:600;
+      transition: transform .18s ease, box-shadow .18s;
+      min-width:140px;
     }
-
-    .question p {
-      font-size: 1.1rem;
-      color: #444;
-      margin-bottom: 15px;
-    }
-
-    .btn {
+    .btn.yes{
+      background: linear-gradient(90deg,var(--accent), #ff8fb5);
+      color:#081226;
       border: none;
-      border-radius: 12px;
-      padding: 10px 20px;
-      margin: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: transform 0.2s;
+      box-shadow: 0 8px 30px rgba(255,107,159,0.12);
+    }
+    .btn.no{
+      background:transparent;
+      color:#333;
+    }
+    .btn:hover{ transform: translateY(-4px) }
+
+    /* ---------- balloons ---------- */
+    .balloon{
+      position:fixed;
+      bottom:-120px;
+      width:56px;
+      height:72px;
+      border-radius:50% 50% 45% 45%;
+      transform-origin:center;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      z-index:1200;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    .string{
+      width:2px;
+      height:60px;
+      background: rgba(0,0,0,0.09);
+      margin-top:4px;
+      border-radius:2px;
+      transform: translateY(20px);
+    }
+    @keyframes floatBalloon {
+      0% { transform: translateY(0) rotate(-6deg) scale(1); opacity:1 }
+      100% { transform: translateY(-900px) rotate(8deg) scale(1.05); opacity:0 }
     }
 
-    .btn:hover {
-      transform: scale(1.05);
+    /* ---------- love letter (fade-in) ---------- */
+    .love-letter{
+      max-width:820px;
+      background: linear-gradient(180deg,#fff,#fff);
+      border-radius:16px;
+      padding:28px;
+      box-shadow: 0 10px 40px rgba(20,30,60,0.06);
+      opacity:0;
+      transform: translateY(20px) scale(.995);
+      transition: opacity .9s ease, transform .9s ease;
     }
-
-    .yes {
-      background: linear-gradient(90deg, #ff8fa3, #ffb3c1);
-      color: #fff;
+    .love-letter.visible{
+      opacity:1;
+      transform: translateY(0) scale(1);
     }
+    .love-letter h2{ color: #ff4977; margin:0 0 8px 0 }
+    .love-letter p{ color:#333; line-height:1.5; font-size:1rem; }
 
-    .no {
-      background: #fff;
-      border: 2px solid #ddd;
-      color: #444;
-    }
+    /* small helper */
+    .muted{ color:var(--muted); font-size:0.95rem }
+    .small{ font-size:0.9rem }
 
-    .love-letter {
-      display: none;
-      max-width: 600px;
-      margin: 4rem auto;
-      padding: 30px;
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 16px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-      font-size: 1rem;
-      line-height: 1.6;
-      animation: fadeIn 1s ease forwards;
-    }
-
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-
-    .floating {
-      position: fixed;
-      pointer-events: none;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 999;
-    }
-
-    .balloon {
-      position: absolute;
-      width: 60px;
-      height: 80px;
-      border-radius: 50% 50% 45% 45%;
-      background: pink;
-      animation: floatUp 6s linear forwards;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 28px;
-    }
-
-    @keyframes floatUp {
-      0% {transform: translateY(0); opacity: 1;}
-      100% {transform: translateY(-800px); opacity: 0;}
-    }
-
-    iframe {
-      width: 0;
-      height: 0;
-      border: none;
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
+    /* responsive */
+    @media (max-width:760px){
+      .photo{ width:46vw; height:28vw }
+      .btn{ min-width:120px }
     }
   </style>
 </head>
-
 <body>
-  <h1>Happy Birthday, My Anukriti 💖</h1>
-  <div class="subtitle">Life is a sojourn, but our journey is eternal — let’s continue it!</div>
+  <!-- ======= SECTION 1: HERO / TITLE ======= -->
+  <section id="hero">
+    <div class="container">
+      <h1>Happy Birthday, My Anukriti 💖</h1>
+      <div class="lead">Life is a sojourn but our journey is eternal — let's continue it!</div>
 
-  <section class="photo-section">
-    <div class="photo"><img src="photo1.jpg" alt="Photo 1"></div>
-    <div class="photo"><img src="photo2.jpg" alt="Photo 2"></div>
+      <div style="margin-top:18px">
+        <button class="btn yes" onclick="goToSection('photos')">View memories & photos ✨</button>
+        <button class="btn" onclick="goToSection('questions')">Tell me now 💌</button>
+      </div>
+
+      <div style="margin-top:16px" class="small muted">Music is ready below — tap to start the surprise later ✨</div>
+
+      <!-- SoundCloud embed (your provided iframe). It allows autoplay but browsers may need a click first. -->
+      <div style="margin-top:18px; max-width:760px; margin-left:auto;margin-right:auto;">
+        <!-- Your SoundCloud iframe (auto_play=true). Keep as-is. -->
+        <iframe width="100%" height="140" scrolling="no" frameborder="no" allow="autoplay"
+          src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1712068935&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+        <div style="font-size:10px;color:#999;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+          <a href="https://soundcloud.com/qasim-raza-830447418" target="_blank" style="color:#999;text-decoration:none">Qasim Raza</a> ·
+          <a href="https://soundcloud.com/qasim-raza-830447418/jhan-mein-aisa-kaun-hai" target="_blank" style="color:#999;text-decoration:none">jhan mein aisa kaun hai</a>
+        </div>
+      </div>
+
+    </div>
   </section>
 
-  <section class="question">
-    <p>Are you ready for us?</p>
-    <button class="btn yes" onclick="celebrate()">Yes 💕</button>
-    <button class="btn no">No 😝</button>
+  <!-- ======= SECTION 2: PHOTOS ======= -->
+  <section id="photos">
+    <div class="container">
+      <h2 style="margin-top:0;color:#ff4977">Memories — our photos</h2>
+      <div class="muted small">(Replace these with your own photos by uploading to GitHub and using the raw link — instructions below.)</div>
+
+      <div class="photos" style="margin-top:18px">
+        <div class="photo">
+          <img id="photo1" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&q=80" alt="photo1">
+          <div class="caption">our smile that day</div>
+        </div>
+
+        <div class="photo">
+          <img id="photo2" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=1200&q=80" alt="photo2">
+          <div class="caption">adventures with you</div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px">
+        <button class="btn yes" onclick="goToSection('questions')">Ready for some questions? 💞</button>
+        <button class="btn" onclick="goToSection('hero')">Back</button>
+      </div>
+    </div>
   </section>
 
-  <section class="question">
-    <p>I am afraid my love for you will only accentuate — does that work?</p>
-    <button class="btn yes" onclick="celebrate()">Yes 💞</button>
-    <button class="btn no">No 😅</button>
+  <!-- ======= SECTION 3: QUESTIONS (interactive) ======= -->
+  <section id="questions">
+    <div class="container">
+      <h2 style="margin-top:0;color:#ff4977">A little heart-quiz 💘</h2>
+      <div class="muted small">Answer from your heart — there are cute surprises for every Yes 💕</div>
+
+      <div class="question-card" id="q1" style="margin-top:18px">
+        <div class="qtext">1) Are you ready for us?</div>
+        <div class="btnrow">
+          <button class="btn yes" onclick="answerQuestion(1, true)">Yes 💕</button>
+          <button class="btn no" onclick="answerQuestion(1, false)">No 😝</button>
+        </div>
+      </div>
+
+      <div class="question-card" id="q2" style="margin-top:16px">
+        <div class="qtext">2) I am afraid my love for you will only accentuate, does that works?</div>
+        <div class="btnrow">
+          <button class="btn yes" onclick="answerQuestion(2, true)">Yes 💕</button>
+          <button class="btn no" onclick="answerQuestion(2, false)">No 😅</button>
+        </div>
+      </div>
+
+      <div style="margin-top:20px">
+        <button class="btn" onclick="goToSection('photos')">Back to photos</button>
+        <button class="btn yes" onclick="revealLetter()">Skip to surprise</button>
+      </div>
+    </div>
   </section>
 
-  <section class="question">
-    <p>Would you hold my hand through every sunrise and storm? 🌅</p>
-    <button class="btn yes" onclick="celebrate()">Always 🌷</button>
-    <button class="btn no">Maybe 😜</button>
+  <!-- ======= SECTION 4: LOVE LETTER (final) ======= -->
+  <section id="final">
+    <div class="container">
+      <div class="love-letter" id="loveLetter">
+        <h2>💌 My Heart, For You — Anukriti</h2>
+        <p>
+          Anukriti — every day spent with you feels like a gentle poem.
+          You are my calm and my celebration. I promise to walk beside you through every season —
+          laugh with you, listen to you, and protect the light in your smile.
+          On your birthday, I only wish for more shared sunrises and simple moments together.
+        </p>
+
+        <p style="margin-top:14px;font-weight:700;">With all my love,<br><span style="color:#ff4977">Utkarsh</span></p>
+      </div>
+
+      <div style="margin-top:20px" class="muted small">
+        Tip: if the music didn’t start automatically, tap any play button on the SoundCloud player above (browsers need a click).
+      </div>
+
+      <div style="margin-top:18px">
+        <button class="btn" onclick="goToSection('hero')">Back to Top</button>
+      </div>
+    </div>
   </section>
 
-  <section class="question">
-    <p>If I bring you tulips every spring, will you bring your smile? 🌷</p>
-    <button class="btn yes" onclick="celebrate()">Of course 💐</button>
-    <button class="btn no">Hmm 😋</button>
-  </section>
-
-  <section class="question">
-    <p>Can we get lost in Paris someday, just wine, cheese, and poetry? 🍷🧀📖</p>
-    <button class="btn yes" onclick="celebrate()">Oui 💋</button>
-    <button class="btn no">No croissants 😆</button>
-  </section>
-
-  <section class="question">
-    <p>Would you still love me when my hair turns grey? 👴</p>
-    <button class="btn yes" onclick="celebrate()">Forever 💞</button>
-    <button class="btn no">Maybe with highlights 😄</button>
-  </section>
-
-  <section class="question">
-    <p>If love were a song, would you sing it with me? 🎵</p>
-    <button class="btn yes" onclick="celebrate()">Always 🎶</button>
-    <button class="btn no">Off-key 😂</button>
-  </section>
-
-  <div id="loveLetter" class="love-letter">
-    <h2>💌 My Dearest Anukriti</h2>
-    <p>
-      You’ve painted my life with soft colors — tulips, sunflowers, and lilies blooming in our laughter.  
-      Every glass of wine and every piece of cheese feels warmer with you beside me.  
-      You make the world poetic — and I want to keep writing it with you.  
-      <br><br>
-      — Yours forever,<br>Utkarsh 💖
-    </p>
-  </div>
-
-  <div class="floating" id="floating"></div>
-
-  <!-- Hidden background music -->
-  <iframe src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1712068935&auto_play=true"></iframe>
-
+  <!-- ======= SCRIPTS: behavior, balloons, confetti, answers tracking ======= -->
   <script>
-    function celebrate() {
-      document.getElementById("loveLetter").style.display = "block";
-      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-      for (let i = 0; i < 6; i++) setTimeout(createBalloon, i * 300);
+    // smooth go to section
+    function goToSection(id){
+      document.getElementById(id).scrollIntoView({behavior:'smooth'});
     }
 
-    function createBalloon() {
-      const container = document.getElementById("floating");
-      const b = document.createElement("div");
-      b.className = "balloon";
-      const icons = ["🌷", "🌻", "🌸", "💖", "🍷", "🧀"];
-      b.textContent = icons[Math.floor(Math.random() * icons.length)];
-      b.style.left = Math.random() * 90 + "vw";
-      b.style.background = randomColor();
-      b.style.animationDuration = 5 + Math.random() * 4 + "s";
-      container.appendChild(b);
-      setTimeout(() => b.remove(), 7000);
+    // track answers, when both are yes -> reveal letter
+    const answers = {1:null, 2:null};
+    function answerQuestion(num, isYes){
+      answers[num] = isYes;
+      if(isYes){
+        // balloons + confetti + small celebration
+        launchBalloons();
+        confettiBurst();
+      } else {
+        // playful response
+        toast("Aww 😜 Try again when your heart agrees!");
+      }
+
+      // if both answered yes, show letter after a small delay
+      if(answers[1] === true && answers[2] === true){
+        setTimeout(()=> {
+          revealLetter();
+          // also scroll to final section
+          goToSection('final');
+        }, 1100);
+      }
     }
 
-    function randomColor() {
-      const arr = ["#ffd6e1", "#ffecb3", "#ffb3c7", "#bfefff", "#ffd9c7", "#fce7ff"];
-      return arr[Math.floor(Math.random() * arr.length)];
+    // reveal love letter with fade-in
+    function revealLetter(){
+      const L = document.getElementById('loveLetter');
+      L.classList.add('visible');
+      // soft confetti burst
+      confettiBurst();
+      // try to make SoundCloud play by focusing iframe (often browser needs interaction)
+      // (Note: iframe autoplay is best-effort; user may need to tap play on mobile)
+      // If SoundCloud doesn't start, the user can tap the player — we show a small hint
+      toast("Open your heart — and tap the player if music is silent.");
     }
 
-    // Scroll fade-in effect
-    const sections = document.querySelectorAll("section");
-    window.addEventListener("scroll", () => {
-      const trigger = window.innerHeight * 0.85;
-      sections.forEach(sec => {
-        const top = sec.getBoundingClientRect().top;
-        if (top < trigger) sec.classList.add("visible");
-      });
+    // tiny toast message
+    function toast(text){
+      const el = document.createElement('div');
+      el.textContent = text;
+      el.style.position = 'fixed';
+      el.style.left = '50%';
+      el.style.top = '18px';
+      el.style.transform = 'translateX(-50%)';
+      el.style.background = 'rgba(0,0,0,0.7)';
+      el.style.color = '#fff';
+      el.style.padding = '8px 14px';
+      el.style.borderRadius = '999px';
+      el.style.boxShadow = '0 6px 18px rgba(0,0,0,0.2)';
+      el.style.zIndex = 9999;
+      document.body.appendChild(el);
+      setTimeout(()=> el.remove(), 2400);
+    }
+
+    // confetti helper
+    function confettiBurst(){
+      try{
+        confetti({
+          particleCount: 130,
+          spread: 80,
+          origin: { y: 0.6 }
+        });
+      }catch(e){}
+    }
+
+    // BALLOONS: create many balloons that float up and 'pop' (scale out) after some time
+    function launchBalloons(){
+      const colors = ['#ffb3c7','#ffd6e1','#ff9fbf','#ffd9c7','#bfefff','#ffecb3'];
+      const count = 10;
+      for(let i=0;i<count;i++){
+        createBalloon(colors[Math.floor(Math.random()*colors.length)]);
+      }
+    }
+
+    function createBalloon(color){
+      const b = document.createElement('div');
+      b.className = 'balloon';
+      b.style.left = (10 + Math.random()*80) + 'vw';
+      b.style.background = color;
+      b.style.animation = 'floatBalloon ' + (4 + Math.random()*5) + 's linear forwards';
+      // small string element
+      const s = document.createElement('div');
+      s.className = 'string';
+      b.appendChild(s);
+      document.body.appendChild(b);
+
+      // remove after finished float
+      const lifetime = 6000 + Math.random()*2400;
+      setTimeout(()=>{
+        // pop animation (scale + fade)
+        b.style.transition = 'transform .18s ease, opacity .18s ease';
+        b.style.transform = 'scale(0.2)';
+        b.style.opacity = '0';
+        setTimeout(()=> b.remove(), 200);
+      }, lifetime);
+    }
+
+    // If user uses keyboard nav or scroll, letter visibility may be needed
+    window.addEventListener('load', ()=>{
+      // nothing special for now
+    });
+
+    // Helpful: pressing 'L' reveals letter (debug)
+    document.addEventListener('keydown', (e)=>{
+      if(e.key.toLowerCase() === 'l') revealLetter();
     });
   </script>
 </body>
