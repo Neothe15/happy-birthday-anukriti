@@ -5,94 +5,81 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Happy Birthday, My Anukriti 💖</title>
 
-<!-- confetti lib -->
+<!-- confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
 <style>
-  /* === VIVID ANIMATED GRADIENT THEME (Type 1) === */
   :root{
-    --card: rgba(255,255,255,0.96);
-    --accent:#6b2bd6;
-    --muted:#4b4f64;
+    --c1: #e9e6ff;  /* lavender */
+    --c2: #ffd9eb;  /* pink */
+    --c3: #ffe8c2;  /* peach */
+    --c4: #fff7d6;  /* sunflower */
+    --accent: #6b2bd6;
+    --card: rgba(255,255,255,0.98);
+    --muted: #4b4f64;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
     margin:0;
-    font-family: "Poppins", Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    font-family: "Poppins", Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color:#111;
+    background: linear-gradient(120deg,var(--c1) 0%, var(--c2) 30%, var(--c3) 60%, var(--c4) 100%);
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     line-height:1.45;
-    overflow-y:auto;
-    color:#111;
+    scroll-behavior:smooth;
   }
 
-  /* Animated gradient background */
-  body::before{
-    content:"";
-    position:fixed; inset:0; z-index:-2;
-    background: linear-gradient(120deg, #ffd1e8 0%, #ffefc7 25%, #ffd9f2 50%, #e6e1ff 75%, #cfeafc 100%);
-    background-size: 1000% 1000%;
-    filter: saturate(1.05) contrast(1.02);
-    animation: gradientShift 28s linear infinite;
-    opacity:0.98;
-  }
-  @keyframes gradientShift{
-    0%{ background-position:0% 50% }
-    25%{ background-position:50% 0% }
-    50%{ background-position:100% 50% }
-    75%{ background-position:50% 100% }
-    100%{ background-position:0% 50% }
-  }
-
-  /* page wrapper */
   .wrap{ max-width:980px; margin:28px auto; padding:20px; }
 
   header.hero{
     display:flex; align-items:center; justify-content:space-between; gap:12px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.84));
-    padding:14px 16px; border-radius:14px; box-shadow: 0 14px 50px rgba(60,40,90,0.06);
+    background: var(--card);
+    padding:14px 18px; border-radius:14px; box-shadow: 0 14px 50px rgba(80,40,140,0.06);
   }
-  .title { font-family:'Playfair Display', serif; font-size:1.6rem; color:var(--accent); margin:0 }
+  .title { font-family:'Playfair Display', serif; font-size:1.5rem; color:var(--accent); margin:0; opacity:0; animation:fadeIn 1.6s ease forwards; }
   .subtitle{ color:var(--muted); margin-top:6px; font-size:0.95rem }
 
   .audio-controls{ display:flex; gap:10px; align-items:center }
   .btn {
-    padding:8px 12px; border-radius:10px; cursor:pointer; border:none; background:linear-gradient(90deg,#f07ab1,#7c4dff);
+    padding:8px 12px; border-radius:10px; cursor:pointer; border:none; background:linear-gradient(90deg,#ff7ab3,#7c4dff);
     color:#fff; font-weight:700; box-shadow: 0 8px 26px rgba(124,77,255,0.14);
   }
   .btn.ghost{ background:transparent; border:2px solid rgba(0,0,0,0.06); color:#111; box-shadow:none }
 
-  /* photos (small) */
-  .photos{ display:flex; gap:18px; justify-content:center; margin-top:20px; flex-wrap:wrap }
-  .photo{ width:220px; border-radius:12px; overflow:hidden; background:var(--card); padding:8px; box-shadow:0 12px 36px rgba(40,25,80,0.06); display:flex; align-items:center; justify-content:center }
-  .photo img{ width:100%; height:150px; object-fit:contain; border-radius:8px; display:block }
+  /* photos */
+  .photos{ display:flex; gap:18px; justify-content:center; margin-top:18px; flex-wrap:wrap }
+  .photo{ width:200px; border-radius:12px; overflow:hidden; background:var(--card); padding:8px; box-shadow:0 12px 36px rgba(40,25,80,0.06); display:flex; align-items:center; justify-content:center; opacity:0; transform:translateY(18px); animation:fadeInUp 1s ease forwards; animation-delay:0.8s }
+  .photo img{ width:100%; height:140px; object-fit:contain; border-radius:8px; display:block }
 
   /* questions */
   .card{ margin-top:18px; background:var(--card); padding:16px; border-radius:12px; box-shadow: 0 16px 46px rgba(50,40,90,0.06) }
   .questions{ display:flex; flex-direction:column; gap:12px; margin-top:8px }
-  .q{ padding:12px; border-radius:10px; background:linear-gradient(180deg,#fff,#f9fbff) }
-  .q p{ margin:0 0 10px 0; font-weight:700; color:#262046 }
-  .btn-row { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:6px }
-  .small-quote { margin-top:8px; color:#5a2ea6; font-style:italic; opacity:0; transform:translateY(6px); transition:opacity .45s, transform .45s; text-align:center }
+  .q{ padding:12px; border-radius:10px; background:linear-gradient(180deg,#fff,#fbfdff) }
+  .q p{ margin:0 0 10px 0; font-weight:700; color:#222 }
+  .btn-row{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:6px }
+  .small-quote{ margin-top:8px; color:#5a2ea6; font-style:italic; opacity:0; transform:translateY(6px); transition:opacity .45s, transform .45s; text-align:center }
   .small-quote.show{ opacity:1; transform:translateY(0) }
 
-  /* floating layer */
-  .floating { position:fixed; left:0; top:0; right:0; bottom:0; pointer-events:none; z-index:9999; overflow:visible }
+  /* floating items */
+  .floating{ position:fixed; left:0; top:0; right:0; bottom:0; pointer-events:none; z-index:9999; overflow:visible }
+  .float-item{ position:absolute; width:50px; height:50px; will-change:transform,opacity; transform-origin:center }
 
-  .float-item{ position:absolute; width:48px; height:48px; will-change:transform,opacity; transform-origin:center; }
-
-  /* love letter (hidden until all yes) */
-  .love-letter{ margin-top:18px; padding:20px; border-radius:12px; background: linear-gradient(180deg,#fff,#fffbff); box-shadow:0 18px 72px rgba(60,40,100,0.07); opacity:0; transform:translateY(12px); transition:opacity .9s ease, transform .9s ease; text-align:left }
+  /* love letter */
+  .love-letter{ margin-top:18px; padding:20px; border-radius:12px; background: linear-gradient(180deg,#fff,#fff8fb); box-shadow:0 18px 60px rgba(50,30,80,0.06); opacity:0; transform:translateY(12px); transition: opacity .9s ease, transform .9s ease; text-align:left }
   .love-letter.show{ opacity:1; transform:translateY(0) }
   .love-letter h2{ margin:0; color:var(--accent); font-family:'Playfair Display', serif }
 
   .secret{ margin-top:20px; text-align:center; color:var(--accent); font-weight:700; opacity:0; transition:opacity 1.2s; }
   .secret.show{ opacity:1 }
 
-  /* small music player bottom-right */
+  /* small music player */
   .music-fixed{ position:fixed; right:14px; bottom:14px; z-index:10010 }
   .music-bar{ width:220px; height:58px; border-radius:10px; overflow:hidden; background:var(--card); box-shadow:0 20px 60px rgba(60,40,100,0.08); display:flex; align-items:center; justify-content:center }
+
+  @keyframes fadeIn { to { opacity:1 } }
+  @keyframes fadeInUp { to { opacity:1; transform:translateY(0) } }
 
   @media (max-width:760px){
     .photo{ width:44vw } .photo img{ height:40vw }
@@ -105,53 +92,59 @@
   <div class="wrap">
     <header class="hero" role="banner">
       <div>
-        <div class="title">Happy Birthday, My Anukriti 💖</div>
-        <div class="subtitle">Bright evenings, laughter and music — here's to us.</div>
+        <div class="title">Happy Birthday, My Anukriti 💖 — Life is a journey, but ours is eternal. Let’s continue it together.</div>
+        <div class="subtitle">Bright evenings, laughter, and little surprises — made for you.</div>
       </div>
 
-      <div class="audio-controls" aria-hidden="false">
+      <div class="audio-controls">
         <button id="enableAudio" class="btn">Enable Audio</button>
         <button id="retryAudio" class="btn ghost">Retry Play</button>
       </div>
     </header>
 
-    <!-- Photos -->
+    <!-- PHOTOS -->
     <div class="photos" role="list" aria-label="Photos">
       <div class="photo" role="listitem"><img id="photo1" src="https://raw.githubusercontent.com/Neothe15/happy-birthday-anukriti/refs/heads/main/photo1.jpg" alt="photo1"></div>
       <div class="photo" role="listitem"><img id="photo2" src="https://raw.githubusercontent.com/Neothe15/happy-birthday-anukriti/refs/heads/main/photo2.jpg" alt="photo2"></div>
     </div>
 
-    <!-- Questions -->
+    <!-- QUESTIONS -->
     <div class="card" aria-live="polite">
       <h3 style="margin:0;color:var(--accent); font-family:'Playfair Display', serif">A little heart-quiz</h3>
 
       <div class="questions">
-        <div class="q" id="q1"><p>1) Are you ready for us?</p>
+        <div class="q" id="q1">
+          <p>1) Are you ready for us?</p>
           <div class="btn-row"><button onclick="onYes(1)" class="btn">Yes 💕</button><button onclick="onNo(1)" class="btn ghost">No 😅</button></div>
           <div id="quote1" class="small-quote"></div>
         </div>
 
-        <div class="q" id="q2"><p>2) I am afraid my love for you will only accentuate — does that work?</p>
+        <div class="q" id="q2">
+          <p>2) I am afraid my love for you will only accentuate — does that work?</p>
           <div class="btn-row"><button onclick="onYes(2)" class="btn">Yes 💞</button><button onclick="onNo(2)" class="btn ghost">No 😅</button></div>
           <div id="quote2" class="small-quote"></div>
         </div>
 
-        <div class="q" id="q3"><p>3) Would you sing with me when the night is soft and slow?</p>
+        <div class="q" id="q3">
+          <p>3) Would you sing with me when the night is soft and slow?</p>
           <div class="btn-row"><button onclick="onYes(3)" class="btn">Yes 🎵</button><button onclick="onNo(3)" class="btn ghost">No 🎧</button></div>
           <div id="quote3" class="small-quote"></div>
         </div>
 
-        <div class="q" id="q4"><p>4) Will you share warm wine and silly stories with me?</p>
+        <div class="q" id="q4">
+          <p>4) Will you share warm wine and silly stories with me?</p>
           <div class="btn-row"><button onclick="onYes(4)" class="btn">Yes 🥂</button><button onclick="onNo(4)" class="btn ghost">No 🍵</button></div>
           <div id="quote4" class="small-quote"></div>
         </div>
 
-        <div class="q" id="q5"><p>5) Do you promise to keep laughing with me, even over small cheese plates?</p>
+        <div class="q" id="q5">
+          <p>5) Do you promise to keep laughing with me, even over small cheese plates?</p>
           <div class="btn-row"><button onclick="onYes(5)" class="btn">Yes 🧀</button><button onclick="onNo(5)" class="btn ghost">No 😋</button></div>
           <div id="quote5" class="small-quote"></div>
         </div>
 
-        <div class="q" id="q6"><p>6) Will you hold my hand through little storms and bright mornings?</p>
+        <div class="q" id="q6">
+          <p>6) Will you hold my hand through little storms and bright mornings?</p>
           <div class="btn-row"><button onclick="onYes(6)" class="btn">Yes 🤝</button><button onclick="onNo(6)" class="btn ghost">No 😅</button></div>
           <div id="quote6" class="small-quote"></div>
         </div>
@@ -160,27 +153,28 @@
       <div style="text-align:center;margin-top:12px"><button class="btn ghost" onclick="revealLetter()">Skip to love letter</button></div>
     </div>
 
-    <!-- Love letter -->
+    <!-- love letter -->
     <div id="loveLetter" class="love-letter" role="region" aria-live="polite">
       <h2>💌 A Letter For You, Anukriti</h2>
       <p style="margin-top:10px; color:#333; line-height:1.6;">
         Happy Birthday, My Anukriti 💖<br><br>
-        Life is a sojourn but our journey is eternal — let's continue it!<br><br>
-        In quiet mornings and warm evenings, you are the gentle song I wake to and the calm I fall asleep beside.
-        Thank you for every small smile and every shared silence.
+        Life is a journey but our journey is eternal — let's continue it together.<br><br>
+        In the quiet mornings and the warm evenings, you are my favorite story. Your laughter brightens the simple moments,
+        your presence turns ordinary days into something I look forward to. I promise to hold your hand, to be silly with you,
+        to share wine and quiet songs, and to create small, lasting joys every day.
       </p>
       <p style="font-weight:700; margin-top:12px; color:var(--accent)">With all my love,<br>Utkarsh 💞</p>
     </div>
 
-    <div style="height:28px"></div>
+    <div style="height:18px"></div>
     <div id="secretText" class="secret">I love you more than words ever could. 💞</div>
-    <div style="height:160px"></div>
+    <div style="height:140px"></div>
   </div>
 
-  <!-- Floating animated item layer -->
+  <!-- floating items layer -->
   <div class="floating" id="floating"></div>
 
-  <!-- Small visible SoundCloud player (Married Life) -->
+  <!-- SoundCloud player (Married Life - The Wild Conductor) -->
   <div class="music-fixed" aria-hidden="false">
     <div class="music-bar" title="Married Life (Piano Version) — starts after 20s">
       <iframe id="scPlayer" width="100%" height="48" scrolling="no" frameborder="no" allow="autoplay"
@@ -190,28 +184,24 @@
   </div>
 
 <script>
-/* ---------------------------
-   State, quotes, and helpers
-   --------------------------- */
+/* ====== Config & messages ====== */
 const quotes = {
   1: "You make ordinary days extraordinary.",
-  2: "My love deepens every day with you.",
-  3: "Let's sing the small songs of our life together.",
-  4: "Warm wine, warm laughter — I choose you.",
-  5: "Cheese, smiles, and you: perfect evenings.",
-  6: "I'll hold your hand through every weather."
+  2: "Tulips always remind me of you — gentle and bright.",
+  3: "Sunshine, smiles, and you — forever.",
+  4: "Warm wine, silly stories, endless laughter.",
+  5: "Small plates, big smiles, a thousand memories.",
+  6: "Through storms and mornings, always together."
 };
 const answered = {1:false,2:false,3:false,4:false,5:false,6:false};
 
-/* ---------------------------
-   Floating SVG item spawner
-   --------------------------- */
+/* ====== Floating item spawner ====== */
 const floating = document.getElementById('floating');
 
-function spawnItem(svg, leftPx, duration=5200, size=48){
+function spawnItem(svgMarkup, leftPx, duration=4800, size=50){
   const el = document.createElement('div');
   el.className = 'float-item';
-  el.innerHTML = svg;
+  el.innerHTML = svgMarkup;
   el.style.left = (leftPx ?? Math.random()*(window.innerWidth-120)) + 'px';
   el.style.bottom = '-80px';
   el.style.opacity = '0';
@@ -221,11 +211,12 @@ function spawnItem(svg, leftPx, duration=5200, size=48){
 
   requestAnimationFrame(()=> {
     el.style.transition = `transform ${duration/1000}s cubic-bezier(.18,.9,.3,1), opacity .6s`;
-    el.style.transform = `translateY(-120vh) rotate(${(Math.random()*80)-40}deg) scale(${0.85 + Math.random()*0.5})`;
+    el.style.transform = `translateY(-120vh) rotate(${(Math.random()*80)-40}deg) scale(${0.9 + Math.random()*0.4})`;
     el.style.opacity = '1';
   });
 
   setTimeout(()=> {
+    // pop
     el.style.transition = 'transform .18s ease, opacity .18s ease';
     el.style.transform += ' scale(.15)';
     el.style.opacity = '0';
@@ -233,40 +224,41 @@ function spawnItem(svg, leftPx, duration=5200, size=48){
   }, duration - 420);
 }
 
-/* small SVG icons (vivid colors) */
-function svgHeart(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 20s-6.5-4.3-8.2-6.2C2.6 11.7 4 7.9 7.1 7.9c1.6 0 2.4 1.2 2.9 1.8.5-.6 1.3-1.8 2.9-1.8 3.1 0 4.5 3.8 3.3 5.9C18.5 15.7 12 20 12 20z" fill="#ff3b8d"/></svg>` }
-function svgTulip(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 2c2.7 0 4.5 1.9 5 3.8.5 2-1.1 4.1-3.6 4.9-1 .3-1.9.6-2.4 1.1-.5-.5-1.4-.8-2.4-1.1C8.1 9.9 6.5 7.8 7 5.8 7.5 3.9 9.3 2 12 2z" fill="#ff8bb3"/><path d="M12 22v-6" stroke="#5b2b4b" stroke-width="1.2" stroke-linecap="round"/></svg>` }
+/* ====== SVG icons (vivid) ====== */
+function svgHeartBalloon(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 19s-6.5-4.3-8.2-6.2C2.6 10.7 4 7.9 7.1 7.9c1.6 0 2.4 1.2 2.9 1.8.5-.6 1.3-1.8 2.9-1.8 3.1 0 4.5 3.8 3.3 5.9C18.5 15.7 12 19 12 19z" fill="#ff3b8d"/></svg>` }
+function svgTulip(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 2c2.7 0 4.5 1.9 5 3.8.5 2-1.1 4.1-3.6 4.9-1 .3-1.9.6-2.4 1.1-.5-.5-1.4-.8-2.4-1.1C8.1 9.9 6.5 7.8 7 5.8 7.5 3.9 9.3 2 12 2z" fill="#ff6fa8"/><path d="M12 22v-6" stroke="#5b2b4b" stroke-width="1.2" stroke-linecap="round"/></svg>` }
 function svgLily(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 2c2 2 3 2.2 5 2 1.5-.2 2.5 1 2.6 2.5.1 1.4-.8 2.6-2 3.6-1.6 1.4-3.6 2.2-5.6 2.2s-4-.8-5.6-2.2C6 10 5 8.8 5.1 7.4c.1-1.5 1.1-2.7 2.6-2.5 2 .2 3 .2 5-2z" fill="#ffd8ea"/></svg>` }
 function svgSunflower(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><circle cx="12" cy="12" r="6" fill="#ffd36b"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke="#c57a00" stroke-width="1.1" stroke-linecap="round"/></svg>` }
-function svgWineCheese(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M9 3h6v6a3 3 0 01-3 3 3 3 0 01-3-3V3z" fill="#d63b4a"/><path d="M12 12v7" stroke="#442022" stroke-width="1.2" stroke-linecap="round"/><path d="M3 18h18v2H3z" fill="#ffd66b"/></svg>` }
 function svgNote(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M9 17V5l10-2v12" stroke="#4b2b80" stroke-width="1.4" stroke-linecap="round"/></svg>` }
+function svgWineCheese(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M9 3h6v6a3 3 0 01-3 3 3 3 0 01-3-3V3z" fill="#d63b4a"/><path d="M12 12v7" stroke="#442022" stroke-width="1.2" stroke-linecap="round"/><path d="M3 18h18v2H3z" fill="#ffd66b"/></svg>` }
 function svgStar(){ return `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 2l2.5 6.1L21 9l-5 3.6L17.5 21 12 17.6 6.5 21 8 12.6 3 9l6.5-.9L12 2z" fill="#ffd36b"/></svg>` }
 
-/* ---------------------------
-   Actions per question
-   --------------------------- */
+/* ====== Actions per question ====== */
 function onYes(n){
-  if(answered[n]){ smallToast('Already yes ❤️'); return; }
+  if(answered[n]) { smallToast('Already answered ❤️'); return; }
   answered[n] = true;
-  const qEl = document.getElementById('quote'+n);
-  qEl.textContent = quotes[n];
-  qEl.classList.add('show');
+  document.getElementById('quote'+n).textContent = quotes[n];
+  document.getElementById('quote'+n).classList.add('show');
 
-  // small chime
+  // chime
   playChime();
 
-  // themed effects
+  // themed spawn
   if(n===1){
-    for(let i=0;i<8;i++) spawnItem(svgHeart(), Math.random()*(window.innerWidth-120), 4200+Math.random()*1300);
+    for(let i=0;i<8;i++) spawnItem(svgHeartBalloon(), Math.random()*(window.innerWidth-120), 4200+Math.random()*1200);
   } else if(n===2){
-    for(let i=0;i<7;i++) spawnItem([svgTulip(), svgLily()][Math.floor(Math.random()*2)], Math.random()*(window.innerWidth-120), 4800+Math.random()*1200);
+    // emphasize tulips: spawn more tulips and lilies
+    for(let i=0;i<10;i++){
+      const pick = Math.random() < 0.7 ? svgTulip() : svgLily();
+      spawnItem(pick, Math.random()*(window.innerWidth-120), 4800+Math.random()*1200, 56);
+    }
   } else if(n===3){
     for(let i=0;i<8;i++) spawnItem(svgSunflower(), Math.random()*(window.innerWidth-120), 4500+Math.random()*1600);
   } else if(n===4){
-    for(let i=0;i<6;i++) spawnItem(svgWineCheese(), Math.random()*(window.innerWidth-120), 5200+Math.random()*1200);
+    for(let i=0;i<7;i++) spawnItem(svgNote(), Math.random()*(window.innerWidth-120), 4500+Math.random()*1400);
     try{ confetti({ particleCount: 40, spread: 45, origin: { y: 0.75 } }); }catch(e){}
   } else if(n===5){
-    for(let i=0;i<9;i++) spawnItem(svgNote(), Math.random()*(window.innerWidth-120), 4000+Math.random()*1400);
+    for(let i=0;i<7;i++) spawnItem(svgWineCheese(), Math.random()*(window.innerWidth-120), 5200+Math.random()*1200);
   } else if(n===6){
     for(let i=0;i<10;i++) spawnItem(svgStar(), Math.random()*(window.innerWidth-120), 5200+Math.random()*1200);
     try{ confetti({ particleCount: 70, spread: 80, origin: { y: 0.8 } }); }catch(e){}
@@ -274,44 +266,42 @@ function onYes(n){
 
   smallToast('Yay 💕');
 
+  // reveal if all yes
   const all = Object.values(answered).every(v => v===true);
   if(all){
-    setTimeout(()=> { revealLetter(); document.getElementById('secretText').classList.add('show'); }, 900);
+    setTimeout(()=> {
+      document.getElementById('loveLetter').classList.add('show');
+      document.getElementById('secretText').classList.add('show');
+      try{ confetti({ particleCount: 140, spread: 90, origin: { y: 0.6 } }); }catch(e){}
+    }, 900);
   }
 }
 
 function onNo(n){ smallToast("Aww 😅 maybe later!"); }
 
-function smallToast(txt){
-  const t=document.createElement('div'); t.textContent=txt;
+/* ====== small toast ====== */
+function smallToast(msg){
+  const t = document.createElement('div');
+  t.textContent = msg;
   Object.assign(t.style,{position:'fixed',left:'50%',top:'18px',transform:'translateX(-50%)',background:'rgba(0,0,0,0.72)',color:'#fff',padding:'8px 12px',borderRadius:'999px',zIndex:10020});
-  document.body.appendChild(t); setTimeout(()=>t.remove(),2000);
+  document.body.appendChild(t);
+  setTimeout(()=> t.remove(), 1800);
 }
 
-/* simple chime */
+/* ====== chime ====== */
 function playChime(){
   try{
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const o = ctx.createOscillator(), g = ctx.createGain();
-    o.type='sine'; o.frequency.value=880; g.gain.setValueAtTime(0,ctx.currentTime); g.gain.linearRampToValueAtTime(0.12,ctx.currentTime+0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.9); o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime+0.9);
+    o.type = 'sine'; o.frequency.value = 880; g.gain.setValueAtTime(0, ctx.currentTime);
+    g.gain.linearRampToValueAtTime(0.12, ctx.currentTime+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+0.9);
+    o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime+0.9);
   }catch(e){}
 }
 
-/* reveal letter */
-function revealLetter(){ document.getElementById('loveLetter').classList.add('show'); try{ confetti({ particleCount: 120, spread: 80, origin:{ y: 0.6 } }); }catch(e){} }
-
-/* reveal secret on scroll near bottom */
-window.addEventListener('scroll', ()=> { const s=document.getElementById('secretText'); if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 220) s.classList.add('show'); });
-
-/* small initial ambient floats */
-setTimeout(()=>{ spawnItem(svgTulip(), 40, 9000); spawnItem(svgStar(), window.innerWidth*0.6, 10000); spawnItem(svgHeart(), window.innerWidth*0.2, 8500); }, 700);
-
-/* ---------------------------
-   SoundCloud player starts after 20s (best-effort)
-   --------------------------- */
+/* ====== SoundCloud start after 20s (best effort) ====== */
 const scIframe = document.getElementById('scPlayer');
-
 function startSoundCloud(){
   try{
     if(!scIframe) return;
@@ -322,14 +312,27 @@ function startSoundCloud(){
 }
 setTimeout(()=> startSoundCloud(), 20000);
 
-/* Enable Audio button (user gesture) and retry */
+/* Enable / Retry audio buttons */
 document.getElementById('enableAudio').addEventListener('click', ()=>{
   try{ startSoundCloud(); }catch(e){}
-  smallToast('Attempted to enable audio. If blocked, press play on the player.');
+  smallToast('Attempted to enable audio. If blocked, tap play on the player.');
 });
 document.getElementById('retryAudio').addEventListener('click', ()=>{
   try{ startSoundCloud(); }catch(e){}
-  smallToast('Retry triggered.');
+  smallToast('Retry attempted.');
+});
+
+/* initial gentle floats for ambiance */
+setTimeout(()=> {
+  spawnItem(svgTulip(), 40, 9000, 56);
+  spawnItem(svgStar(), Math.min(window.innerWidth*0.6, window.innerWidth-120), 10000, 52);
+  spawnItem(svgHeartBalloon(), Math.min(window.innerWidth*0.2, window.innerWidth-80), 8500, 50);
+}, 700);
+
+/* reveal secret on scroll near bottom */
+window.addEventListener('scroll', ()=> {
+  const secret = document.getElementById('secretText');
+  if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) secret.classList.add('show');
 });
 </script>
 </body>
