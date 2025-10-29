@@ -1,188 +1,386 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Happy Birthday, My Anukriti 💖</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
-      color: #333;
-      text-align: center;
-      overflow-x: hidden;
-    }
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Happy Birthday, My Anukriti 💖</title>
 
-    h1 {
-      margin-top: 40px;
-      font-size: 2.2em;
-      color: #fff;
-      text-shadow: 2px 2px 10px rgba(255,255,255,0.3);
-    }
+<!-- SoundCloud widget API (used to play the embedded player on first gesture) -->
+<script src="https://w.soundcloud.com/player/api.js"></script>
+<!-- confetti for celebrations -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
-    .photo-container {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin: 40px 0;
-      flex-wrap: wrap;
-    }
+<style>
+  :root{
+    --lav:#efe9ff; --pink:#ffd6ea; --peach:#ffe7c6; --sun:#fff8d9;
+    --accent:#7b3df0; --card: rgba(255,255,255,0.98); --muted:#555;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family: "Poppins", Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    background: linear-gradient(120deg,var(--lav) 0%, var(--pink) 30%, var(--peach) 60%, var(--sun) 100%);
+    color:#111; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    line-height:1.45; overflow-x:hidden;
+  }
+  .wrap { max-width:980px; margin:28px auto; padding:20px; }
 
-    .photo {
-      width: 230px;
-      height: 230px;
-      border-radius: 16px;
-      object-fit: cover;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease;
-    }
+  header.hero{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    background: var(--card); padding:14px 18px; border-radius:14px; box-shadow: 0 14px 50px rgba(80,40,140,0.06);
+  }
+  .title { font-family:'Playfair Display', serif; font-size:1.45rem; color:var(--accent); margin:0 }
+  .subtitle{ color:var(--muted); margin-top:6px; font-size:0.95rem }
 
-    .photo:hover {
-      transform: scale(1.05);
-    }
+  /* PHOTOS */
+  .photos{ display:flex; gap:18px; justify-content:center; margin-top:18px; flex-wrap:wrap }
+  .photo{ width:200px; border-radius:12px; overflow:hidden; background:var(--card); padding:8px; box-shadow:0 12px 36px rgba(40,25,80,0.06); display:flex; align-items:center; justify-content:center }
+  .photo img{ width:100%; height:140px; object-fit:contain; border-radius:8px; display:block }
 
-    .question {
-      background: rgba(255,255,255,0.3);
-      padding: 20px;
-      border-radius: 15px;
-      margin: 25px auto;
-      width: 80%;
-      max-width: 500px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
+  /* CARD / QUESTIONS */
+  .card{ margin-top:18px; background:var(--card); padding:16px; border-radius:12px; box-shadow: 0 16px 46px rgba(50,40,90,0.06) }
+  .questions{ display:flex; flex-direction:column; gap:12px; margin-top:8px }
+  .q{ padding:12px; border-radius:10px; background:linear-gradient(180deg,#fff,#fbfdff) }
+  .q p{ margin:0 0 10px 0; font-weight:700; color:#222 }
+  .btn-row{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:6px }
+  button.primary{ padding:10px 16px; border-radius:12px; background:linear-gradient(90deg,#ff7aa8,#ff9fbf); color:#061426; border:none; font-weight:700; cursor:pointer }
+  button.ghost{ padding:10px 16px; border-radius:12px; background:transparent; border:2px solid rgba(30,40,60,0.06); color:#333; cursor:pointer }
 
-    button {
-      padding: 10px 25px;
-      margin: 10px;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      background: #ff7eb3;
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+  .quote { margin-top:8px; color:#5a2ea6; font-style:italic; opacity:0; transform:translateY(6px); transition:opacity .4s, transform .4s; text-align:center }
+  .quote.show{ opacity:1; transform:translateY(0) }
 
-    button:hover {
-      background: #ff4d94;
-      transform: scale(1.05);
-    }
+  /* floating (balloon-like upward) */
+  .floating-layer { position:fixed; left:0; top:0; right:0; bottom:0; pointer-events:none; z-index:9999; overflow:visible }
+  .float-item { position:absolute; width:56px; height:56px; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; will-change: transform, opacity; }
 
-    .floating {
-      position: fixed;
-      bottom: 0;
-      font-size: 2rem;
-      animation: floatUp 6s linear forwards;
-      z-index: 9999;
-    }
+  /* float animation (balloon-like upward) -- duration set dynamically in JS */
+  @keyframes balloonUp {
+    0% { transform: translateY(0) scale(1); opacity:1; }
+    60% { opacity:0.95; }
+    100% { transform: translateY(-120vh) scale(1.1); opacity:0; }
+  }
 
-    @keyframes floatUp {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      50% { opacity: 0.8; }
-      100% { transform: translateY(-120vh) scale(1.2); opacity: 0; }
-    }
+  .glow { filter: drop-shadow(0 8px 18px rgba(0,0,0,0.08)); animation: glowAnim 1.6s ease-in-out infinite; }
+  @keyframes glowAnim { 0%{transform:scale(1)}50%{transform:scale(1.06)}100%{transform:scale(1)} }
 
-    .love-letter {
-      opacity: 0;
-      margin: 50px auto;
-      width: 80%;
-      max-width: 600px;
-      font-style: italic;
-      background: rgba(255,255,255,0.25);
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 4px 30px rgba(0,0,0,0.1);
-      transition: opacity 2s ease;
-    }
+  /* LOVE LETTER */
+  .love-letter { margin-top:18px; padding:20px; border-radius:12px; background:linear-gradient(180deg,#fff,#fff8fb); box-shadow:0 18px 60px rgba(20,30,60,0.06); opacity:0; transform:translateY(12px); transition:opacity .9s ease, transform .9s ease; text-align:left }
+  .love-letter.show { opacity:1; transform:translateY(0) }
+  .love-letter h2{ margin:0; color:var(--accent); font-family:'Playfair Display', serif }
 
-    iframe {
-      margin-top: 30px;
-      width: 60%;
-      height: 100px;
-      border-radius: 10px;
-      border: none;
-    }
-  </style>
+  /* music player small */
+  .music-fixed { position:fixed; right:12px; bottom:12px; z-index:10012 }
+  .music-bar{ width:260px; height:62px; border-radius:10px; overflow:hidden; background:var(--card); box-shadow:0 20px 60px rgba(60,40,100,0.08); display:flex; align-items:center; justify-content:center }
+
+  /* small responsive */
+  @media (max-width:760px){
+    .photo{ width:44vw } .photo img{ height:40vw }
+    header.hero{ flex-direction:column; align-items:flex-start; gap:10px }
+    .music-fixed{ left:10px; right:auto }
+  }
+</style>
 </head>
 <body>
+  <div class="wrap">
+    <header class="hero" role="banner">
+      <div>
+        <div class="title">Happy Birthday, My Anukriti 💖</div>
+        <div class="subtitle">A small web surprise — music, memories and some gentle questions from my heart.</div>
+      </div>
+      <div>
+        <button id="enableAudio" class="primary">Enable Audio</button>
+        <button id="retryAudio" class="ghost">Retry Play</button>
+      </div>
+    </header>
 
-  <h1>Happy Birthday, My Anukriti 💖<br>Life is a sojourn, but our journey is eternal.</h1>
+    <!-- PHOTOS -->
+    <div class="photos" role="list" aria-label="Photos">
+      <div class="photo" role="listitem"><img id="photo1" src="https://raw.githubusercontent.com/Neothe15/happy-birthday-anukriti/refs/heads/main/photo1.jpg" alt="photo1"></div>
+      <div class="photo" role="listitem"><img id="photo2" src="https://raw.githubusercontent.com/Neothe15/happy-birthday-anukriti/refs/heads/main/photo2.jpg" alt="photo2"></div>
+    </div>
 
-  <div class="photo-container">
-    <img src="https://raw.githubusercontent.com/Neothe15/happy-birthday-anukriti/refs/heads/main/photo1.jpg" class="photo">
-    <img src="https://raw.githubusercontent.com/Neothe15/happy-birthday-anukriti/refs/heads/main/photo2.jpg" class="photo">
+    <!-- QUESTIONS -->
+    <div class="card" aria-live="polite">
+      <h3 style="margin:0;color:var(--accent); font-family:'Playfair Display', serif">A little heart-quiz</h3>
+      <div class="questions">
+        <div class="q" id="q1"><p>1) Are you ready for us?</p>
+          <div class="btn-row"><button class="primary" onclick="handleYes(1)">Yes 💕</button><button class="ghost" onclick="handleNo(1)">No 😅</button></div>
+          <div id="qt1" class="quote"></div></div>
+
+        <div class="q" id="q2"><p>2) I am afraid my love for you will only accentuate — does that work?</p>
+          <div class="btn-row"><button class="primary" onclick="handleYes(2)">Yes 💞</button><button class="ghost" onclick="handleNo(2)">No 😅</button></div>
+          <div id="qt2" class="quote"></div></div>
+
+        <div class="q" id="q3"><p>3) Would you sing with me when the night is soft and slow?</p>
+          <div class="btn-row"><button class="primary" onclick="handleYes(3)">Yes 🎵</button><button class="ghost" onclick="handleNo(3)">No 🎧</button></div>
+          <div id="qt3" class="quote"></div></div>
+
+        <div class="q" id="q4"><p>4) Will you share warm wine and silly stories with me?</p>
+          <div class="btn-row"><button class="primary" onclick="handleYes(4)">Yes 🥂</button><button class="ghost" onclick="handleNo(4)">No 🍵</button></div>
+          <div id="qt4" class="quote"></div></div>
+
+        <div class="q" id="q5"><p>5) Do you promise to keep laughing with me, even over small cheese plates?</p>
+          <div class="btn-row"><button class="primary" onclick="handleYes(5)">Yes 🧀</button><button class="ghost" onclick="handleNo(5)">No 😋</button></div>
+          <div id="qt5" class="quote"></div></div>
+
+        <div class="q" id="q6"><p>6) Will you hold my hand through little storms and bright mornings?</p>
+          <div class="btn-row"><button class="primary" onclick="handleYes(6)">Yes 🤝</button><button class="ghost" onclick="handleNo(6)">No 😅</button></div>
+          <div id="qt6" class="quote"></div></div>
+      </div>
+
+      <div style="text-align:center;margin-top:12px"><button class="ghost" onclick="revealLetter()">Skip to love letter</button></div>
+    </div>
+
+    <!-- LOVE LETTER -->
+    <div id="loveLetter" class="love-letter" role="region" aria-live="polite">
+      <h2>💌 A Letter For You, Anukriti</h2>
+      <p style="margin-top:10px; color:#333; line-height:1.6;">
+        Anukriti, you are the poetry my soul waited a lifetime to hear.<br><br>
+        With you, every silence feels like a melody, and every heartbeat finds its rhythm.<br><br>
+        Forever yours — Utkarsh 💖
+      </p>
+    </div>
   </div>
 
-  <div class="question" data-type="❤️ Balloons + Hearts">Are you ready for us?</div>
-  <div class="question" data-type="🌷 Tulips">Do you know how much you mean to me?</div>
-  <div class="question" data-type="🌻 Sunflowers">Would you relive our best day again?</div>
-  <div class="question" data-type="🎵 Musical Notes">Can you feel the melody of our moments?</div>
-  <div class="question" data-type="🍷🧀 Wine & Cheese">Shall we toast to love and laughter?</div>
-  <div class="question" data-type="✨ Stars">Do you believe forever exists for us?</div>
+  <!-- FLOATING LAYER -->
+  <div class="floating-layer" id="floating"></div>
 
-  <div class="love-letter" id="loveLetter">
-    My dearest Anukriti,<br><br>
-    Every heartbeat whispers your name, every memory glows in your light.  
-    You’ve turned ordinary moments into timeless art.  
-    May our story keep unfolding — softly, endlessly, beautifully. 💖  
-    <br><br>Forever yours,<br>Utkarsh
+  <!-- SOUND AND PLAYER -->
+  <div class="music-fixed" aria-hidden="false">
+    <div class="music-bar">
+      <!-- small visible SoundCloud iframe (user can control). We'll control via Widget API on first Yes. -->
+      <iframe id="sc-player" width="100%" height="48" scrolling="no" frameborder="no" allow="autoplay"
+        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A222963773&color=%239d89ff&auto_play=false&hide_related=true&visual=false"></iframe>
+    </div>
   </div>
 
-  <!-- Music Player -->
-  <!-- Hidden audio player (starts after 1st Yes) -->
-<audio id="bgMusic" preload="auto">
-  <source src="https://files.catbox.moe/tq5ftt.mp3" type="audio/mpeg">
-</audio>
+<script>
+/* -------------------------
+   CONFIG: quotes and themes
+   ------------------------- */
+const yesQuotes = {
+  1: "Yes — I believe in us, and I promise to try every day.",
+  2: "Yes — your warmth makes every season gentle and bright.",
+  3: "Yes — I will sing with you on soft nights forever.",
+  4: "Yes — cozy wine evenings and silly stories, always.",
+  5: "Yes — laughter, cheese, and a thousand little moments.",
+  6: "Yes — hand in hand through storms and mornings."
+};
+const noQuotes = {
+  1: "No? 😅 Okay, tease accepted — try again later!",
+  2: "No? 😄 I’ll earn it with many tulips then.",
+  3: "No? 🎧 Promise I'll find a song you'll hum back.",
+  4: "No? 🍵 Fine, tea & stories it is — I can improvise.",
+  5: "No? 😋 I'll keep making you laugh until you say yes.",
+  6: "No? 😅 Hold my sleeve — I’ll try harder."
+};
 
+/* THEMES: emojis used for each question (balloon-like float) */
+const THEMES = {
+  1: ['❤️','💖','🎈'],
+  2: ['🌷','💮','🌷','🌸'],
+  3: ['🌻','🌼','🌻'],
+  4: ['🎵','🎶','🎵'],
+  5: ['🍷','🧀','🥂'],
+  6: ['✨','⭐','🌟']
+};
 
-  <script>
-  const emojis = {
-    "❤️ Balloons + Hearts": ["❤️", "💖", "💞", "🎈"],
-    "🌷 Tulips": ["🌷", "💐", "🌸", "🌹"],
-    "🌻 Sunflowers": ["🌻", "🌼", "🌞"],
-    "🎵 Musical Notes": ["🎵", "🎶", "🎼"],
-    "🍷🧀 Wine & Cheese": ["🍷", "🧀", "🥂"],
-    "✨ Stars": ["✨", "🌟", "💫"]
-  };
+/* state */
+let answered = {1:false,2:false,3:false,4:false,5:false,6:false};
+let musicStarted = false;
 
-  let musicPlayed = false;
+/* --- helper UI functions --- */
+function showQuote(id, text){
+  const el = document.getElementById('qt'+id);
+  if(!el) return;
+  el.textContent = text;
+  el.classList.add('show');
+  // remove after some seconds (let it stay) -- we keep it
+}
 
-  document.querySelectorAll('.question').forEach(q => {
-    const yes = document.createElement('button');
-    yes.textContent = "Yes 💖";
-    const no = document.createElement('button');
-    no.textContent = "No 😅";
-    q.appendChild(document.createElement('br'));
-    q.appendChild(yes);
-    q.appendChild(no);
+/* small toast */
+function toast(msg){
+  const t = document.createElement('div'); t.textContent = msg;
+  Object.assign(t.style,{position:'fixed',left:'50%',top:'18px',transform:'translateX(-50%)',background:'rgba(0,0,0,0.72)',color:'#fff',padding:'8px 12px',borderRadius:'999px',zIndex:10050});
+  document.body.appendChild(t); setTimeout(()=> t.remove(), 1600);
+}
 
-    yes.addEventListener('click', () => {
-      if (!musicPlayed) {
-        const music = document.getElementById('bgMusic');
-        music.play().catch(err => console.log("Autoplay blocked:", err));
-        musicPlayed = true;
-      }
-      createFloatingEmojis(emojis[q.dataset.type]);
-      if (q === document.querySelectorAll('.question')[5]) {
-        document.getElementById('loveLetter').style.opacity = 1;
-      }
-    });
-  });
+/* -------------------------
+   AUDIO: SoundCloud widget control
+   ------------------------- */
+const scFrame = document.getElementById('sc-player');
+let scWidget = null;
+try { scWidget = SC.Widget(scFrame); } catch(e){ scWidget = null; }
 
-  function createFloatingEmojis(list) {
-    for (let i = 0; i < 20; i++) {
-      const emoji = document.createElement('div');
-      emoji.className = 'floating';
-      emoji.textContent = list[Math.floor(Math.random() * list.length)];
-      emoji.style.left = Math.random() * 100 + "vw";
-      emoji.style.animationDuration = (4 + Math.random() * 3) + "s";
-      emoji.style.fontSize = (20 + Math.random() * 20) + "px";
-      document.body.appendChild(emoji);
-      setTimeout(() => emoji.remove(), 6000);
+// start soundcloud playback on first user gesture
+function startMusic(){
+  if(musicStarted) return;
+  musicStarted = true;
+  // try widget play (works when called on user gesture)
+  try{
+    if(scWidget && typeof scWidget.play === 'function') {
+      scWidget.play();
+      return;
     }
-  }
-</script>
+  }catch(e){ /* ignore */ }
 
+  // fallback: try set src auto_play true (best-effort)
+  try{
+    if(scFrame.src.indexOf('auto_play=true') === -1){
+      scFrame.src = scFrame.src.replace('auto_play=false','auto_play=true');
+    }
+  }catch(e){ /* ignore */ }
+}
+
+/* enable/retry buttons */
+document.getElementById('enableAudio').addEventListener('click', ()=>{
+  startMusic();
+  toast('Tried to enable audio — if blocked, use the player play button.');
+});
+document.getElementById('retryAudio').addEventListener('click', ()=>{
+  startMusic();
+  toast('Retrying audio start...');
+});
+
+/* -------------------------
+   FLOATING (balloon-like) system
+   - startTheme: clears previous theme, spawns a strong initial burst, then continuous spawn
+   - clearTheme: stop spawning and fade out existing items
+   ------------------------- */
+
+const floatingLayer = document.getElementById('floating');
+let themeInterval = null;
+
+function clearTheme(){
+  if(themeInterval){ clearInterval(themeInterval); themeInterval = null; }
+  // fade existing
+  document.querySelectorAll('.float-item').forEach(el=>{
+    el.style.transition = 'opacity .6s ease, transform .6s ease';
+    el.style.opacity = '0';
+    setTimeout(()=> el.remove(), 620);
+  });
+}
+
+function spawnBalloon(emoji, options = {}){
+  const { left = Math.random()*(window.innerWidth - 80), size = 48, duration = 4800 } = options;
+  const el = document.createElement('div');
+  el.className = 'float-item glow';
+  el.innerHTML = `<div style="font-size:${Math.max(18, size*0.6)}px; line-height:1">${emoji}</div>`;
+
+  // small variation in position
+  const leftPx = left;
+  const drift = (Math.random()*200 - 100) + 'px'; // horizontal drift by CSS variable read in animation
+  const rot = (Math.random()*40 - 20) + 'deg';
+  const scale = (0.9 + Math.random()*0.35);
+
+  el.style.left = leftPx + 'px';
+  el.style.bottom = ( -30 + Math.random()*40 ) + 'px';
+  el.style.width = size + 'px';
+  el.style.height = size + 'px';
+  el.style.opacity = '0';
+  el.style.setProperty('--drift', drift);
+  el.style.setProperty('--rot', rot);
+  el.style.setProperty('--scale', scale);
+
+  // set animation (balloonUp keyframes in CSS) with dynamic duration
+  el.style.animation = `balloonUp ${duration/1000}s linear forwards`;
+
+  floatingLayer.appendChild(el);
+
+  // slight entrance fade
+  requestAnimationFrame(()=> el.style.opacity = '1');
+
+  // auto-remove after animation
+  setTimeout(()=> { try{ el.remove(); } catch(e){} }, duration + 600);
+}
+
+/* Start a theme with strong initial burst and then continuous spawn */
+function startTheme(themeId){
+  clearTheme();
+  const emojis = THEMES[themeId] || ['✨'];
+  // strong initial burst
+  for(let i=0;i<16;i++){
+    spawnBalloon(emojis[Math.floor(Math.random()*emojis.length)], {
+      left: Math.random()*(window.innerWidth - 80),
+      size: 36 + Math.random()*30,
+      duration: 3600 + Math.random()*1800
+    });
+  }
+  // continuous spawn
+  themeInterval = setInterval(()=> {
+    for(let i=0;i<6;i++){
+      spawnBalloon(emojis[Math.floor(Math.random()*emojis.length)], {
+        left: Math.random()*(window.innerWidth - 80),
+        size: 32 + Math.random()*28,
+        duration: 3200 + Math.random()*1600
+      });
+    }
+  }, 700); // spawn group every 700ms
+}
+
+/* -------------------------
+   YES / NO handlers mapping to themes & quotes
+   ------------------------- */
+
+function handleYes(n){
+  if(answered[n]) { toast('Already answered ❤️'); return; }
+  answered[n] = true;
+  showQuote(n, yesQuotes[n] || "Yes ❤️");
+
+  // first user gesture -> start music
+  if(!musicStarted) startMusic();
+
+  // small chime
+  try{ playClickTone(); }catch(e){}
+
+  // start corresponding theme
+  startTheme(n);
+
+  // small confetti for certain positive moments
+  if(n===1 || n===4 || n===6){
+    try{ confetti({ particleCount: (n===6?100:40), spread: 80, origin:{ y: 0.85 } }); }catch(e){}
+  }
+
+  // reveal love letter only after all 6 are yes
+  const allYes = Object.values(answered).every(v=>v===true);
+  if(allYes){
+    setTimeout(()=> {
+      document.getElementById('loveLetter').classList.add('show');
+      try{ confetti({ particleCount: 140, spread: 90, origin: { y: 0.6 } }); }catch(e){}
+    }, 800);
+  }
+}
+
+function handleNo(n){
+  // allow multiple no's; still show playful quote
+  showQuote(n, noQuotes[n] || "Hmm — noted 😅");
+  // small playful animation: a tiny 'pop' confetti or shake
+  try{ confetti({ particleCount: 24, spread: 40, origin:{ y:0.98 } }); }catch(e){}
+  try{ playClickTone(); }catch(e){}
+}
+
+/* tiny click chime using WebAudio */
+function playClickTone(){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine'; o.frequency.value = 880;
+    g.gain.setValueAtTime(0, ctx.currentTime);
+    g.gain.linearRampToValueAtTime(0.12, ctx.currentTime+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+0.9);
+    o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime+0.9);
+  }catch(e){}
+}
+
+/* reveal letter (skip) */
+function revealLetter(){
+  document.getElementById('loveLetter').classList.add('show');
+}
+
+/* small initial hint: brief tulip flash */
+setTimeout(()=> { startTheme(2); setTimeout(()=> clearTheme(), 1200); }, 700);
+
+/* cleanup on unload */
+window.addEventListener('beforeunload', ()=> clearTheme());
+</script>
 </body>
 </html>
