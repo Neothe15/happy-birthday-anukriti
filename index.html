@@ -137,44 +137,52 @@
 
 
   <script>
-    const emojis = {
-      "❤️ Balloons + Hearts": ["❤️", "💖", "💞", "🎈"],
-      "🌷 Tulips": ["🌷", "💐", "🌸", "🌹"],
-      "🌻 Sunflowers": ["🌻", "🌼", "🌞"],
-      "🎵 Musical Notes": ["🎵", "🎶", "🎼"],
-      "🍷🧀 Wine & Cheese": ["🍷", "🧀", "🥂"],
-      "✨ Stars": ["✨", "🌟", "💫"]
-    };
+  const emojis = {
+    "❤️ Balloons + Hearts": ["❤️", "💖", "💞", "🎈"],
+    "🌷 Tulips": ["🌷", "💐", "🌸", "🌹"],
+    "🌻 Sunflowers": ["🌻", "🌼", "🌞"],
+    "🎵 Musical Notes": ["🎵", "🎶", "🎼"],
+    "🍷🧀 Wine & Cheese": ["🍷", "🧀", "🥂"],
+    "✨ Stars": ["✨", "🌟", "💫"]
+  };
 
-    document.querySelectorAll('.question').forEach(q => {
-      const yes = document.createElement('button');
-      yes.textContent = "Yes 💖";
-      const no = document.createElement('button');
-      no.textContent = "No 😅";
-      q.appendChild(document.createElement('br'));
-      q.appendChild(yes);
-      q.appendChild(no);
+  let musicPlayed = false;
 
-      yes.addEventListener('click', () => {
-        createFloatingEmojis(emojis[q.dataset.type]);
-        if (q === document.querySelectorAll('.question')[5]) {
-          document.getElementById('loveLetter').style.opacity = 1;
-        }
-      });
-    });
+  document.querySelectorAll('.question').forEach(q => {
+    const yes = document.createElement('button');
+    yes.textContent = "Yes 💖";
+    const no = document.createElement('button');
+    no.textContent = "No 😅";
+    q.appendChild(document.createElement('br'));
+    q.appendChild(yes);
+    q.appendChild(no);
 
-    function createFloatingEmojis(list) {
-      for (let i = 0; i < 20; i++) {
-        const emoji = document.createElement('div');
-        emoji.className = 'floating';
-        emoji.textContent = list[Math.floor(Math.random() * list.length)];
-        emoji.style.left = Math.random() * 100 + "vw";
-        emoji.style.animationDuration = (4 + Math.random() * 3) + "s";
-        emoji.style.fontSize = (20 + Math.random() * 20) + "px";
-        document.body.appendChild(emoji);
-        setTimeout(() => emoji.remove(), 6000);
+    yes.addEventListener('click', () => {
+      if (!musicPlayed) {
+        const music = document.getElementById('bgMusic');
+        music.play().catch(err => console.log("Autoplay blocked:", err));
+        musicPlayed = true;
       }
+      createFloatingEmojis(emojis[q.dataset.type]);
+      if (q === document.querySelectorAll('.question')[5]) {
+        document.getElementById('loveLetter').style.opacity = 1;
+      }
+    });
+  });
+
+  function createFloatingEmojis(list) {
+    for (let i = 0; i < 20; i++) {
+      const emoji = document.createElement('div');
+      emoji.className = 'floating';
+      emoji.textContent = list[Math.floor(Math.random() * list.length)];
+      emoji.style.left = Math.random() * 100 + "vw";
+      emoji.style.animationDuration = (4 + Math.random() * 3) + "s";
+      emoji.style.fontSize = (20 + Math.random() * 20) + "px";
+      document.body.appendChild(emoji);
+      setTimeout(() => emoji.remove(), 6000);
     }
-  </script>
+  }
+</script>
+
 </body>
 </html>
