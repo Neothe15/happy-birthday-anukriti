@@ -3,39 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Happy Birthday Anukriti 💖</title>
+  <title>Happy Birthday, My Anukriti 💖</title>
   <style>
     body {
       margin: 0;
-      font-family: "Poppins", sans-serif;
-      text-align: center;
-      background: linear-gradient(135deg, #ffe8f0, #d4e4ff, #fff3c4);
-      min-height: 100vh;
-      overflow-x: hidden;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
       color: #333;
+      text-align: center;
+      overflow-x: hidden;
     }
 
     h1 {
-      font-size: 2.8em;
-      color: #e6398f;
-      margin-top: 20px;
-      text-shadow: 1px 1px 6px rgba(0,0,0,0.15);
+      margin-top: 40px;
+      font-size: 2.2em;
+      color: #fff;
+      text-shadow: 2px 2px 10px rgba(255,255,255,0.3);
     }
 
-    .photo-gallery {
+    .photo-container {
       display: flex;
       justify-content: center;
-      flex-wrap: wrap;
       gap: 20px;
-      margin: 20px;
+      margin: 40px 0;
+      flex-wrap: wrap;
     }
 
     .photo {
-      width: 220px;
-      height: auto;
-      border-radius: 18px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-      transition: transform 0.3s;
+      width: 230px;
+      height: 230px;
+      border-radius: 16px;
+      object-fit: cover;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
     }
 
     .photo:hover {
@@ -43,145 +43,136 @@
     }
 
     .question {
-      background: rgba(255,255,255,0.7);
-      margin: 20px auto;
+      background: rgba(255,255,255,0.3);
       padding: 20px;
-      border-radius: 20px;
-      width: 85%;
+      border-radius: 15px;
+      margin: 25px auto;
+      width: 80%;
       max-width: 500px;
-      box-shadow: 0 5px 18px rgba(0,0,0,0.15);
-    }
-
-    .buttons {
-      margin-top: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
 
     button {
-      background: #ffaad5;
-      border: none;
-      border-radius: 25px;
       padding: 10px 25px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      background: #ff7eb3;
       color: white;
-      font-size: 1em;
       cursor: pointer;
-      transition: all 0.3s;
-      margin: 5px;
+      transition: all 0.3s ease;
     }
 
     button:hover {
-      background: #f06292;
+      background: #ff4d94;
       transform: scale(1.05);
     }
 
-    .float {
+    .floating {
       position: fixed;
-      bottom: -40px;
-      opacity: 0.9;
-      animation: rise 8s linear forwards;
-      pointer-events: none;
-      z-index: 999;
+      bottom: 0;
+      font-size: 2rem;
+      animation: floatUp 6s linear forwards;
+      z-index: 9999;
     }
 
-    @keyframes rise {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-      50% {
-        opacity: 0.95;
-      }
-      100% {
-        transform: translateY(-120vh) scale(1.3);
-        opacity: 0;
-      }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-120vh) scale(1.2); opacity: 0; }
     }
 
-    .letter {
-      background: rgba(255,255,255,0.8);
-      border-radius: 20px;
+    .love-letter {
+      opacity: 0;
       margin: 50px auto;
-      width: 90%;
+      width: 80%;
       max-width: 600px;
-      padding: 25px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
       font-style: italic;
+      background: rgba(255,255,255,0.25);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+      transition: opacity 2s ease;
     }
 
     iframe {
       margin-top: 30px;
-      border-radius: 15px;
-      box-shadow: 0 5px 18px rgba(0,0,0,0.3);
-      width: 300px;
-      height: 80px;
+      width: 60%;
+      height: 100px;
+      border-radius: 10px;
+      border: none;
     }
   </style>
 </head>
 <body>
 
-  <h1>💖 Happy Birthday Anukriti 💖</h1>
+  <h1>Happy Birthday, My Anukriti 💖<br>Life is a sojourn, but our journey is eternal.</h1>
 
-  <div class="photo-gallery">
-    <img src="https://raw.githubusercontent.com/Neothe15/happy-birthday-anukriti/refs/heads/main/photo1.jpg" alt="photo1" class="photo">
-    <img src="https://raw.githubusercontent.com/Neothe15/happy-birthday-anukriti/refs/heads/main/photo2.jpg" alt="photo2" class="photo">
+  <div class="photo-container">
+    <img src="https://raw.githubusercontent.com/Neothe15/happy-birthday-anukriti/refs/heads/main/photo1.jpg" class="photo">
+    <img src="https://raw.githubusercontent.com/Neothe15/happy-birthday-anukriti/refs/heads/main/photo2.jpg" class="photo">
   </div>
 
-  <div id="questions">
-    <div class="question">1️⃣ Do you know how amazing you are?<div class="buttons"><button class="yes-btn">Yes</button></div></div>
-    <div class="question">2️⃣ Do you know how much you’re loved?<div class="buttons"><button class="yes-btn">Yes</button></div></div>
-    <div class="question">3️⃣ Would you smile right now, just for me?<div class="buttons"><button class="yes-btn">Yes</button></div></div>
-    <div class="question">4️⃣ Will you always keep shining like you do?<div class="buttons"><button class="yes-btn">Yes</button></div></div>
-    <div class="question">5️⃣ Do you know how special you make every moment?<div class="buttons"><button class="yes-btn">Yes</button></div></div>
-    <div class="question">6️⃣ Will you keep painting the world with your kindness?<div class="buttons"><button class="yes-btn">Yes</button></div></div>
+  <div class="question" data-type="❤️ Balloons + Hearts">Are you ready for us?</div>
+  <div class="question" data-type="🌷 Tulips">Do you know how much you mean to me?</div>
+  <div class="question" data-type="🌻 Sunflowers">Would you relive our best day again?</div>
+  <div class="question" data-type="🎵 Musical Notes">Can you feel the melody of our moments?</div>
+  <div class="question" data-type="🍷🧀 Wine & Cheese">Shall we toast to love and laughter?</div>
+  <div class="question" data-type="✨ Stars">Do you believe forever exists for us?</div>
+
+  <div class="love-letter" id="loveLetter">
+    My dearest Anukriti,<br><br>
+    Every heartbeat whispers your name, every memory glows in your light.  
+    You’ve turned ordinary moments into timeless art.  
+    May our story keep unfolding — softly, endlessly, beautifully. 💖  
+    <br><br>Forever yours,<br>Utkarsh
   </div>
 
-  <div class="letter">
-    💌 *Dear Anukriti,*  
-    <br><br>
-    You make ordinary days beautiful, and beautiful days extraordinary.  
-    May your journey ahead be filled with laughter, dreams, and sunsets that make your heart smile.  
-    Here’s to your warmth, your spirit, and the magic you bring into every heart you touch.  
-    <br><br>
-    With love,  
-    <b>— Someone who believes you’re truly special 💫</b>
-  </div>
-
-  <!-- 🎵 Music Player -->
-  <iframe scrolling="no" frameborder="no" allow="autoplay"
-    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/222963773&color=%23ff3366&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false">
+  <!-- Music Player -->
+  <iframe 
+    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/222963773&color=%23ff5500&auto_play=true&hide_related=false&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=true">
   </iframe>
 
   <script>
-    const emojiSets = [
-      ['❤️','🎈'],          // Balloons + Hearts
-      ['🌷','🌸'],          // Tulips + Lilies
-      ['🌻'],               // Sunflowers
-      ['🎵','🎶'],          // Music Notes
-      ['🍷','🧀'],          // Wine & Cheese
-      ['✨','🌟']            // Stars
-    ];
+    const emojis = {
+      "❤️ Balloons + Hearts": ["❤️", "💖", "💞", "🎈"],
+      "🌷 Tulips": ["🌷", "💐", "🌸", "🌹"],
+      "🌻 Sunflowers": ["🌻", "🌼", "🌞"],
+      "🎵 Musical Notes": ["🎵", "🎶", "🎼"],
+      "🍷🧀 Wine & Cheese": ["🍷", "🧀", "🥂"],
+      "✨ Stars": ["✨", "🌟", "💫"]
+    };
 
-    let currentSet = 0;
+    document.querySelectorAll('.question').forEach(q => {
+      const yes = document.createElement('button');
+      yes.textContent = "Yes 💖";
+      const no = document.createElement('button');
+      no.textContent = "No 😅";
+      q.appendChild(document.createElement('br'));
+      q.appendChild(yes);
+      q.appendChild(no);
 
-    function floatEmojis(emojis) {
-      for (let i = 0; i < 20; i++) {
-        const emoji = document.createElement('span');
-        emoji.classList.add('float');
-        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        emoji.style.left = Math.random() * 100 + 'vw';
-        emoji.style.fontSize = (Math.random() * 24 + 20) + 'px';
-        emoji.style.animationDuration = (5 + Math.random() * 3) + 's';
-        document.body.appendChild(emoji);
-        setTimeout(() => emoji.remove(), 8000);
-      }
-    }
-
-    document.querySelectorAll('.yes-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        floatEmojis(emojiSets[currentSet]);
-        currentSet = (currentSet + 1) % emojiSets.length;
+      yes.addEventListener('click', () => {
+        createFloatingEmojis(emojis[q.dataset.type]);
+        if (q === document.querySelectorAll('.question')[5]) {
+          document.getElementById('loveLetter').style.opacity = 1;
+        }
       });
     });
-  </script>
 
+    function createFloatingEmojis(list) {
+      for (let i = 0; i < 20; i++) {
+        const emoji = document.createElement('div');
+        emoji.className = 'floating';
+        emoji.textContent = list[Math.floor(Math.random() * list.length)];
+        emoji.style.left = Math.random() * 100 + "vw";
+        emoji.style.animationDuration = (4 + Math.random() * 3) + "s";
+        emoji.style.fontSize = (20 + Math.random() * 20) + "px";
+        document.body.appendChild(emoji);
+        setTimeout(() => emoji.remove(), 6000);
+      }
+    }
+  </script>
 </body>
 </html>
